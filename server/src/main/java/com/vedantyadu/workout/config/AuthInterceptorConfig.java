@@ -13,9 +13,9 @@ public class AuthInterceptorConfig implements WebMvcConfigurer {
     @Autowired
     private AuthInterceptor authInterceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/oauth/**");
-    }
+    // @Override
+    // public void addInterceptors(InterceptorRegistry registry) {
+    // registry.addInterceptor(authInterceptor).addPathPatterns("/**")
+    // .excludePathPatterns("/oauth/**");
+    // }
 }

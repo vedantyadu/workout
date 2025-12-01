@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${geist.variable} antialiased flex justify-center`}>
-        <div className='w-full max-w-7xl min-h-screen font-geist bg-neutral-50'>
+        <div className='w-full max-w-5xl min-h-screen font-geist bg-neutral-50'>
           {children}
         </div>
       </body>

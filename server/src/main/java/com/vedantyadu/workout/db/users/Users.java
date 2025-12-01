@@ -67,5 +67,4 @@ public class Users {
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
     }
-
 }
