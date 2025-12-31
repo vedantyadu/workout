@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { Platform } from 'react-native'
 import * as NavigationBar from 'expo-navigation-bar'
 import { useFonts } from 'expo-font'
+import * as Linking from 'expo-linking'
 
 const GesitRegular = require('../assets/fonts/Geist-Regular.ttf')
 const GeistRegularItalic = require('../assets/fonts/Geist-RegularItalic.ttf')
@@ -31,6 +32,8 @@ export default function RootLayout() {
     'SpaceGrotesk-Bold': SpaceGroteskBold,
   })
 
+  const url = Linking.useLinkingURL()
+
   useEffect(() => {
     if (Platform.OS === 'android') {
       NavigationBar.setStyle('light')
@@ -40,6 +43,8 @@ export default function RootLayout() {
   if (!loaded && !error) {
     return null
   }
+
+  console.log(url)
 
   return (
     <Stack
