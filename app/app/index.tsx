@@ -12,7 +12,7 @@ export default function Home() {
     const baseURL = 'https://accounts.google.com/o/oauth2/v2/auth'
 
     const options = {
-      redirect_uri: 'http://localhost:3000/login/redirect/google',
+      redirect_uri: 'https://workout-redirect.vercel.app',
       client_id:
         '827281209561-a4qffegka0lj3lbkoip7nat43qp681e5.apps.googleusercontent.com',
       access_type: 'offline',
