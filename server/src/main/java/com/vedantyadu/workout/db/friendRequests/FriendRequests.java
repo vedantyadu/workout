@@ -3,6 +3,8 @@ package com.vedantyadu.workout.db.friendRequests;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
+import java.util.List;
+
 import com.vedantyadu.workout.db.users.Users;
 
 import jakarta.persistence.Entity;
@@ -25,10 +27,10 @@ public class FriendRequests {
     private Long id;
 
     @ManyToMany
-    private Users sender;
+    private List<Users> sender;
 
     @ManyToMany
-    private Users receiver;
+    private List<Users> receiver;
 
     @Enumerated(EnumType.STRING)
     private FriendRequestStatus status;
@@ -38,11 +40,11 @@ public class FriendRequests {
         return id;
     }
 
-    public Users getSender() {
+    public List<Users> getSender() {
         return sender;
     }
 
-    public Users getReceiver() {
+    public List<Users> getReceiver() {
         return receiver;
     }
 
@@ -54,11 +56,11 @@ public class FriendRequests {
         this.id = id;
     }
 
-    public void setSender(Users sender) {
+    public void setSender(List<Users> sender) {
         this.sender = sender;
     }
 
-    public void setReceiver(Users receiver) {
+    public void setReceiver(List<Users> receiver) {
         this.receiver = receiver;
     }
 
@@ -67,8 +69,8 @@ public class FriendRequests {
     }
 
     public FriendRequests(Users sender, Users receiver) {
-        this.sender = sender;
-        this.receiver = receiver;
+        this.sender = List.of(sender);
+        this.receiver = List.of(receiver);
         this.status = FriendRequestStatus.PENDING;
     }
 }

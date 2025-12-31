@@ -13,30 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vedantyadu.workout.db.friendRequests.FriendRequests;
 import com.vedantyadu.workout.db.friendRequests.FriendRequestsRepository;
-import com.vedantyadu.workout.db.friends.FriendsRepository;
 import com.vedantyadu.workout.db.users.Users;
 import com.vedantyadu.workout.db.users.UsersRepository;
 
-class UserDTO {
-    private String id;
-    private String name;
-
-    public UserDTO(Users user) {
-        this.id = user.getId();
-        this.name = user.getFullName();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-}
-
 @RestController
-@RequestMapping("/users/{id}")
+@RequestMapping("/users")
 public class UsersController {
 
     @Autowired
@@ -45,17 +26,20 @@ public class UsersController {
     @Autowired
     private FriendRequestsRepository friendRequestsRepository;
 
-    @GetMapping("/")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserDetails(@PathVariable String id) {
         Optional<Users> user = usersRepository.findById(id);
+
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
         UserDTO userDTO = new UserDTO(user.get());
+
         return ResponseEntity.ok(userDTO);
     }
 
-    @PostMapping("/friend-request")
+    @PostMapping("/{id}/friend-request")
     public ResponseEntity<String> sendFriendRequest(@PathVariable String id,
             @RequestAttribute("userId") String userId) {
 
@@ -66,5 +50,29 @@ public class UsersController {
         friendRequestsRepository.save(friendRequests);
 
         return ResponseEntity.ok("Friend request sent to user with id: " + id);
+    }
+}
+
+class UserDTO {
+    private String id;
+    private String name;
+    private String googleId;
+
+    public UserDTO(Users user) {
+        this.id = user.getId();
+        this.googleId = user.getGoogleId();
+        this.name = user.getFullName();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public String getName() {
+        return name;
     }
 }
