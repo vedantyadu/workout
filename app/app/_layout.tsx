@@ -32,7 +32,15 @@ export default function RootLayout() {
     'SpaceGrotesk-Bold': SpaceGroteskBold,
   })
 
-  const url = Linking.useLinkingURL()
+  useEffect(() => {
+    const open = async () => {
+      const initialURL = await Linking.parseInitialURLAsync()
+      if (initialURL) {
+        console.log('Initial URL:', initialURL)
+      }
+    }
+    open()
+  }, [])
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -43,8 +51,6 @@ export default function RootLayout() {
   if (!loaded && !error) {
     return null
   }
-
-  console.log(url)
 
   return (
     <Stack

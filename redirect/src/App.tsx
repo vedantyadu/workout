@@ -4,7 +4,10 @@ import workoutLogo from './assets/images/workout-logo.svg'
 function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    window.open('exp://192.168.1.3:8081/--/?' + params.toString(), '_self')
+    window.open(
+      'exp://192.168.1.3:8081/--/signin?' + params.toString(),
+      '_self'
+    )
   }, [])
 
   return (

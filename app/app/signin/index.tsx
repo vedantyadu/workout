@@ -1,19 +1,15 @@
-import { GeistText } from '@/utils/CustomFontText'
-import { useGlobalSearchParams } from 'expo-router'
-import { useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import * as Linking from 'expo-linking'
+import { SpaceGroteskText } from '@/utils/CustomFontText'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-export default function Signin() {
+export default function SignIn() {
   return (
-    <SafeAreaView className='flex-1 p-4 bg-neutral-100'>
-      <GeistText
+    <SafeAreaProvider>
+      <SpaceGroteskText
         weight='bold'
-        className='text-2xl'
+        className='text-xl'
       >
-        Login
-      </GeistText>
-      <GeistText>Please log in to continue.</GeistText>
-    </SafeAreaView>
+        Sign In Screen
+      </SpaceGroteskText>
+    </SafeAreaProvider>
   )
 }

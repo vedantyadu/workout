@@ -27,7 +27,7 @@ export default function Home() {
     const queryString = new URLSearchParams(options)
     const queryStringURL = `${baseURL}?${queryString.toString()}`
 
-    await WebBrowser.openBrowserAsync(queryStringURL)
+    WebBrowser.openBrowserAsync(queryStringURL)
   }
 
   return (
