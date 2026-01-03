@@ -21,14 +21,9 @@ export function DeepLinkProvider({ children }: { children: React.ReactNode }) {
       }
     })
 
-    const subscription = Linking.addEventListener('url', ({ url }) => {
+    Linking.addEventListener('url', ({ url }) => {
       setCurrentURL(url)
-      WebBrowser.dismissBrowser()
     })
-
-    return () => {
-      subscription.remove()
-    }
   }, [])
 
   useEffect(() => {
