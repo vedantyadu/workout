@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Image } from 'expo-image'
 import * as WebBrowser from 'expo-web-browser'
+import * as Linking from 'expo-linking'
 
 const googleIcon = require('../assets/images/google-icon.svg')
 const appLogo = require('../assets/images/workout-logo.svg')
@@ -27,7 +28,14 @@ export default function Home() {
     const queryString = new URLSearchParams(options)
     const queryStringURL = `${baseURL}?${queryString.toString()}`
 
-    WebBrowser.openBrowserAsync(queryStringURL)
+    const subscription = Linking.addEventListener('url', async ({ url }) => {
+      console.log('URL received in Home screen:', url)
+      await WebBrowser.dismissBrowser()
+    })
+
+    await WebBrowser.openAuthSessionAsync(queryStringURL)
+
+    subscription.remove()
   }
 
   return (

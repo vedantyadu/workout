@@ -19,8 +19,8 @@ public class GoogleAuthConfig {
     private String clientId;
     @Value("${googleoauth.clientSecret}")
     private String clientSecret;
-    @Value("${frontend.url}")
-    private String frontendURL;
+    @Value("${redirect.uri}")
+    private String redirectURI;
 
     public String getGoogleToken(String code) throws IOException, InterruptedException {
 
@@ -29,7 +29,7 @@ public class GoogleAuthConfig {
         params.put("client_secret", this.clientSecret);
         params.put("code", code);
         params.put("grant_type", "authorization_code");
-        params.put("redirect_uri", this.frontendURL + "/login/redirect/google");
+        params.put("redirect_uri", this.redirectURI);
 
         ObjectMapper mapper = new ObjectMapper();
         String requestBody = mapper.writeValueAsString(params);

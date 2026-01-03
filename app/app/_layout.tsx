@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { Platform } from 'react-native'
 import * as NavigationBar from 'expo-navigation-bar'
 import { useFonts } from 'expo-font'
-import * as Linking from 'expo-linking'
+import { DeepLinkProvider } from '@/context/DeepLinkContext'
 
 const GesitRegular = require('../assets/fonts/Geist-Regular.ttf')
 const GeistRegularItalic = require('../assets/fonts/Geist-RegularItalic.ttf')
@@ -33,16 +33,6 @@ export default function RootLayout() {
   })
 
   useEffect(() => {
-    const open = async () => {
-      const initialURL = await Linking.parseInitialURLAsync()
-      if (initialURL) {
-        console.log('Initial URL:', initialURL)
-      }
-    }
-    open()
-  }, [])
-
-  useEffect(() => {
     if (Platform.OS === 'android') {
       NavigationBar.setStyle('light')
     }
@@ -53,13 +43,15 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        statusBarStyle: 'dark',
-      }}
-    >
-      <Stack.Screen name='index' />
-    </Stack>
+    <DeepLinkProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          statusBarStyle: 'dark',
+        }}
+      >
+        <Stack.Screen name='index' />
+      </Stack>
+    </DeepLinkProvider>
   )
 }

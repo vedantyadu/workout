@@ -18,6 +18,32 @@ import com.vedantyadu.workout.config.GoogleAuthConfig;
 import com.vedantyadu.workout.db.users.Users;
 import com.vedantyadu.workout.db.users.UsersRepository;
 
+class AuthDTO {
+    private String accessToken;
+    private String refreshToken;
+
+    public AuthDTO(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+}
+
 @RestController
 @RequestMapping("/oauth")
 public class AuthController {
@@ -55,27 +81,10 @@ public class AuthController {
             String accessToken = authConfig.generateAccessToken(matchedUser.getId());
             String refreshToken = authConfig.generateRefreshToken(matchedUser.getId());
 
-            ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
-                    .httpOnly(true)
-                    .secure(true)
-                    .path("/")
-                    .maxAge(60 * 15)
-                    .sameSite("Strict")
-                    .build();
+            AuthDTO authDTO = new AuthDTO(accessToken, refreshToken);
 
-            ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
-                    .httpOnly(true)
-                    .secure(true)
-                    .path("/")
-                    .maxAge(7 * 24 * 60 * 60)
-                    .sameSite("Strict")
-                    .build();
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.SET_COOKIE, accessCookie.toString());
-            headers.add(HttpHeaders.SET_COOKIE, refreshCookie.toString());
-
-            return ResponseEntity.ok().headers(headers).body("Authentication Successful");
+            return ResponseEntity.ok()
+                    .body(authDTO);
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
