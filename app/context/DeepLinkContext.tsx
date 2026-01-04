@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
 import * as Linking from 'expo-linking'
-import * as WebBrowser from 'expo-web-browser'
 
 export type DeepLinkContextType = {
   currentURL: string | null
@@ -21,9 +20,13 @@ export function DeepLinkProvider({ children }: { children: React.ReactNode }) {
       }
     })
 
-    Linking.addEventListener('url', ({ url }) => {
+    const subscription = Linking.addEventListener('url', ({ url }) => {
       setCurrentURL(url)
     })
+
+    return () => {
+      subscription.remove()
+    }
   }, [])
 
   useEffect(() => {

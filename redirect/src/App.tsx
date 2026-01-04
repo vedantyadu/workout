@@ -6,7 +6,7 @@ function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     window.location.replace(
-      'exp://192.168.1.3:8081/--/signin?' + params.toString()
+      'exp://192.168.1.3:8081/--/auth?' + params.toString()
     )
   }, [])
 

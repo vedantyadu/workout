@@ -51,6 +51,8 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name='index' />
+        <Stack.Screen name='auth/index' />
+        <Stack.Screen name='signin/index' />
       </Stack>
     </DeepLinkProvider>
   )
