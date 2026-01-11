@@ -4,8 +4,8 @@ import { SpaceGroteskText } from '@/utils/CustomFontText'
 import * as WebBrowser from 'expo-web-browser'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const googleIcon = require('../../assets/images/google-icon.svg')
-const appLogo = require('../../assets/images/workout-logo.svg')
+const googleIcon = require('../assets/images/google-icon.svg')
+const appLogo = require('../assets/images/workout-logo.svg')
 
 export default function SignInScreen() {
   const handleGoogleSignInPress = async () => {

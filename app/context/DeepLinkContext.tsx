@@ -29,12 +29,6 @@ export function DeepLinkProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  useEffect(() => {
-    if (currentURL) {
-      console.log(Linking.parse(currentURL))
-    }
-  }, [currentURL])
-
   return (
     <DeepLinkContext.Provider value={{ currentURL, setCurrentURL }}>
       {children}

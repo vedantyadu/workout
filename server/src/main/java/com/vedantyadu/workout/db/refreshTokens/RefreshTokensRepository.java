@@ -9,4 +9,5 @@ import com.vedantyadu.workout.db.users.Users;
 public interface RefreshTokensRepository extends JpaRepository<RefreshTokens, Long> {
     List<RefreshTokens> findByUserId(Users userId);
 
+    RefreshTokens findByToken(String token);
 }

@@ -6,6 +6,7 @@ import { Platform } from 'react-native'
 import * as NavigationBar from 'expo-navigation-bar'
 import { useFonts } from 'expo-font'
 import { DeepLinkProvider } from '@/context/DeepLinkContext'
+import { UserProvider } from '@/context/UserContext'
 
 const GesitRegular = require('../assets/fonts/Geist-Regular.ttf')
 const GeistRegularItalic = require('../assets/fonts/Geist-RegularItalic.ttf')
@@ -43,17 +44,19 @@ export default function RootLayout() {
   }
 
   return (
-    <DeepLinkProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          statusBarStyle: 'dark',
-        }}
-      >
-        <Stack.Screen name='index' />
-        <Stack.Screen name='auth/index' />
-        <Stack.Screen name='signin/index' />
-      </Stack>
-    </DeepLinkProvider>
+    <UserProvider>
+      <DeepLinkProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            statusBarStyle: 'dark',
+          }}
+        >
+          <Stack.Screen name='(protected)' />
+          <Stack.Screen name='signin' />
+          <Stack.Screen name='auth/index' />
+        </Stack>
+      </DeepLinkProvider>
+    </UserProvider>
   )
 }

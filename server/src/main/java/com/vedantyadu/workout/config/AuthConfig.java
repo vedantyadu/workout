@@ -49,6 +49,13 @@ public class AuthConfig {
                 .parseSignedClaims(token);
     }
 
+    public Jws<Claims> validateAndGetRefreshClaims(String token) {
+        return Jwts.parser()
+                .verifyWith((SecretKey) this.getSigningKey(this.jwtRefreshSecretKey))
+                .build()
+                .parseSignedClaims(token);
+    }
+
     private Key getSigningKey(String secret) {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }

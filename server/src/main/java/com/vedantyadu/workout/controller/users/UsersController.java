@@ -26,6 +26,19 @@ public class UsersController {
     @Autowired
     private FriendRequestsRepository friendRequestsRepository;
 
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCurrentUserDetails(@RequestAttribute("userId") String userId) {
+        Optional<Users> user = usersRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        UserDTO userDTO = new UserDTO(user.get());
+
+        return ResponseEntity.ok(userDTO);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserDetails(@PathVariable String id) {
         Optional<Users> user = usersRepository.findById(id);
