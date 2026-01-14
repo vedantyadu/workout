@@ -4,10 +4,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,17 +66,35 @@ public class UsersController {
 
         return ResponseEntity.ok("Friend request sent to user with id: " + id);
     }
+
+    @PostMapping("/setup")
+    public ResponseEntity<String> completeSetup(@RequestAttribute("userId") String userId,
+            @RequestBody UserSetupRequest setupRequest) {
+        Users user = usersRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        user.setFullName(setupRequest.getFullName());
+        user.setSetupComplete(true);
+        usersRepository.save(user);
+
+        return ResponseEntity.ok("User setup completed");
+    }
 }
 
 class UserDTO {
     private String id;
     private String name;
     private String googleId;
+    private boolean setupComplete;
 
     public UserDTO(Users user) {
         this.id = user.getId();
         this.googleId = user.getGoogleId();
         this.name = user.getFullName();
+        this.setupComplete = user.getSetupComplete();
     }
 
     public String getId() {
@@ -87,5 +107,28 @@ class UserDTO {
 
     public String getName() {
         return name;
+    }
+
+    public boolean getSetupComplete() {
+        return setupComplete;
+    }
+}
+
+class UserSetupRequest {
+    private String fullName;
+
+    public UserSetupRequest() {
+    }
+
+    public UserSetupRequest(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

@@ -26,6 +26,9 @@ public class Users {
     @Column(unique = true)
     private String googleId;
 
+    @Column
+    private boolean setupComplete = false;
+
     @OneToMany(mappedBy = "user")
     private List<RefreshTokens> refreshTokens;
 
@@ -66,5 +69,13 @@ public class Users {
 
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
+    }
+
+    public boolean getSetupComplete() {
+        return setupComplete;
+    }
+
+    public void setSetupComplete(boolean setupComplete) {
+        this.setupComplete = setupComplete;
     }
 }
