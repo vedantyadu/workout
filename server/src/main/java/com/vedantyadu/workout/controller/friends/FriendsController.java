@@ -2,7 +2,6 @@ package com.vedantyadu.workout.controller.friends;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +32,11 @@ class FriendDTO {
 @RequestMapping("/friends")
 public class FriendsController {
 
-    @Autowired
     private FriendsRepository friendsRepository;
+
+    public FriendsController(FriendsRepository friendsRepository) {
+        this.friendsRepository = friendsRepository;
+    }
 
     @RequestMapping("/")
     public ResponseEntity<List<FriendDTO>> getFriendsList(@RequestAttribute("userId") String userId) {

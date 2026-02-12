@@ -52,7 +52,7 @@ export default function RootLayout() {
             statusBarStyle: 'dark',
           }}
         >
-          <Stack.Screen name='(protected)' />
+          <Stack.Screen name='(protected)/default' />
           <Stack.Screen name='signin' />
           <Stack.Screen name='auth/index' />
         </Stack>

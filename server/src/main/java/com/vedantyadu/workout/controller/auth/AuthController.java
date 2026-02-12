@@ -51,17 +51,18 @@ class AuthDTO {
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
     private GoogleAuthConfig googleAuthConfig;
-
-    @Autowired
     private UsersRepository usersRepository;
-
-    @Autowired
     private RefreshTokensRepository refreshTokensRepository;
-
-    @Autowired
     private AuthConfig authConfig;
+
+    public AuthController(GoogleAuthConfig googleAuthConfig, UsersRepository usersRepository,
+            RefreshTokensRepository refreshTokensRepository, AuthConfig authConfig) {
+        this.googleAuthConfig = googleAuthConfig;
+        this.usersRepository = usersRepository;
+        this.refreshTokensRepository = refreshTokensRepository;
+        this.authConfig = authConfig;
+    }
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody HashMap<String, String> body) {

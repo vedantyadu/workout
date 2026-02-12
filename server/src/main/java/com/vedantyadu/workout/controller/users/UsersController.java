@@ -1,32 +1,40 @@
 package com.vedantyadu.workout.controller.users;
 
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vedantyadu.workout.db.friendRequests.FriendRequests;
 import com.vedantyadu.workout.db.friendRequests.FriendRequestsRepository;
 import com.vedantyadu.workout.db.users.Users;
 import com.vedantyadu.workout.db.users.UsersRepository;
+import com.vedantyadu.workout.service.AWSS3Service;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/users")
 public class UsersController {
 
-    @Autowired
     private UsersRepository usersRepository;
-
-    @Autowired
+    private AWSS3Service awsS3Service;
     private FriendRequestsRepository friendRequestsRepository;
+
+    public UsersController(UsersRepository usersRepository, AWSS3Service awsS3Service,
+            FriendRequestsRepository friendRequestsRepository) {
+        this.usersRepository = usersRepository;
+        this.awsS3Service = awsS3Service;
+        this.friendRequestsRepository = friendRequestsRepository;
+    }
 
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUserDetails(@RequestAttribute("userId") String userId) {
@@ -42,20 +50,21 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserDetails(@PathVariable String id) {
+    public ResponseEntity<UserProfileDTO> getUserDetails(@PathVariable String id) {
         Optional<Users> user = usersRepository.findById(id);
 
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        UserDTO userDTO = new UserDTO(user.get());
+        UserProfileDTO userProfileDTO = new UserProfileDTO(user.get());
 
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userProfileDTO);
     }
 
     @PostMapping("/{id}/friend-request")
-    public ResponseEntity<String> sendFriendRequest(@PathVariable String id,
+    public ResponseEntity<String> sendFriendRequest(
+            @PathVariable String id,
             @RequestAttribute("userId") String userId) {
 
         Users sender = usersRepository.getReferenceById(userId);
@@ -67,16 +76,30 @@ public class UsersController {
         return ResponseEntity.ok("Friend request sent to user with id: " + id);
     }
 
-    @PostMapping("/setup")
-    public ResponseEntity<String> completeSetup(@RequestAttribute("userId") String userId,
-            @RequestBody UserSetupRequest setupRequest) {
+    @PostMapping(value = "/setup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> completeSetup(
+            HttpServletRequest request,
+            // @RequestPart UserSetupRequest setupRequest,
+            @RequestPart MultipartFile profilePicture) {
+
+        String userId = (String) request.getAttribute("userId");
+
+        System.out.println("Received setup request for userId: " + userId);
+
         Users user = usersRepository.findById(userId).orElse(null);
 
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
-        user.setFullName(setupRequest.getFullName());
+        try {
+            String profilePictureUrl = awsS3Service.uploadFile(profilePicture.getResource().getFile());
+            user.setProfilePictureUrl(profilePictureUrl);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the image");
+        }
+
+        // user.setFullName(setupRequest.getFullName());
         user.setSetupComplete(true);
         usersRepository.save(user);
 
@@ -111,6 +134,24 @@ class UserDTO {
 
     public boolean getSetupComplete() {
         return setupComplete;
+    }
+}
+
+class UserProfileDTO {
+    private String id;
+    private String name;
+
+    public UserProfileDTO(Users user) {
+        this.id = user.getId();
+        this.name = user.getFullName();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }
 

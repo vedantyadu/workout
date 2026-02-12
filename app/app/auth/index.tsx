@@ -27,7 +27,7 @@ export default function AuthScreen() {
         await setRefreshToken(response.data.refreshToken)
         const userRes = await backend.get('/users/me')
         setUserData(() => userRes.data)
-        router.replace('/(protected)')
+        router.replace('/(protected)/default')
       } catch {
         router.replace('/signin')
       }

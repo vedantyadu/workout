@@ -32,6 +32,9 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private List<RefreshTokens> refreshTokens;
 
+    @Column
+    private String profilePictureUrl;
+
     public Users() {
     }
 
@@ -77,5 +80,13 @@ public class Users {
 
     public void setSetupComplete(boolean setupComplete) {
         this.setupComplete = setupComplete;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }

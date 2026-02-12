@@ -1,6 +1,5 @@
 package com.vedantyadu.workout.middleware;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,8 +13,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
     private AuthConfig authConfig;
+
+    public AuthInterceptor(AuthConfig authConfig) {
+        this.authConfig = authConfig;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

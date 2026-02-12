@@ -1,0 +1,96 @@
+import FieldHeading from '@/components/util/FieldHeading'
+import TextInputField from '@/components/util/TextInputField'
+import { SpaceGroteskText } from '@/utils/CustomFontText'
+import { Pressable, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import * as ImagePicker from 'expo-image-picker'
+import { useState } from 'react'
+import { Image } from 'expo-image'
+import { backend } from '@/utils/axios/backend'
+
+export default function SetupScreen() {
+  const [profilePicture, setProfilePicture] =
+    useState<ImagePicker.ImagePickerResult | null>(null)
+
+  const selectProfilePicture = async () => {
+    const image = await ImagePicker.launchImageLibraryAsync({
+      selectionLimit: 1,
+    })
+    setProfilePicture(image)
+  }
+
+  const submit = async () => {
+    const formData = new FormData()
+    const asset = profilePicture?.assets?.[0]
+    console.log('Submitting setup with profile picture:', asset)
+    if (asset) {
+      formData.append('profilePicture', {
+        uri: asset.file,
+        name: asset.fileName,
+        type: asset.mimeType,
+      } as any)
+    }
+
+    try {
+      await backend.post('/users/setup', formData)
+    } catch (error) {
+      console.error('Error submitting setup:', error)
+    }
+  }
+
+  return (
+    <SafeAreaView className='flex-1 bg-neutral-100 p-4'>
+      <View className='gap-8'>
+        <SpaceGroteskText
+          weight='bold'
+          className='text-neutral-600 text-4xl'
+        >
+          Complete your profile setup
+        </SpaceGroteskText>
+
+        <View className='gap-4'>
+          <FieldHeading heading='Profile Picture'>
+            <Pressable
+              className='bg-neutral-200 h-32 w-32 rounded-full items-center justify-center overflow-hidden'
+              onPress={selectProfilePicture}
+            >
+              <Image
+                source={{ uri: profilePicture?.assets?.[0]?.uri }}
+                style={{ width: 128, aspectRatio: 1 }}
+              />
+            </Pressable>
+          </FieldHeading>
+          <FieldHeading heading='Full Name'>
+            <TextInputField placeholder='Full Name' />
+          </FieldHeading>
+          <FieldHeading heading='Username'>
+            <TextInputField placeholder='Username' />
+          </FieldHeading>
+          <FieldHeading heading='Weight (kg)'>
+            <TextInputField
+              placeholder='Weight'
+              keyboardType='numeric'
+            />
+          </FieldHeading>
+          <FieldHeading heading='Height (cm)'>
+            <TextInputField
+              placeholder='Height'
+              keyboardType='numeric'
+            />
+          </FieldHeading>
+          <Pressable
+            className='bg-orange-400 rounded-md py-3 items-center'
+            onPress={submit}
+          >
+            <SpaceGroteskText
+              weight='medium'
+              className='text-neutral-50 text-center'
+            >
+              Submit
+            </SpaceGroteskText>
+          </Pressable>
+        </View>
+      </View>
+    </SafeAreaView>
+  )
+}

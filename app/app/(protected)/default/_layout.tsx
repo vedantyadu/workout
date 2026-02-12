@@ -14,8 +14,12 @@ export default function ProtectedLayout() {
   ) as UserContextType
 
   useLayoutEffect(() => {
-    if (userDataFetched && userData === null) {
-      router.replace('/signin')
+    if (userDataFetched) {
+      if (!userData) {
+        router.replace('/signin')
+      } else if (userData.setupComplete === false) {
+        router.replace('/(protected)/setup')
+      }
     }
   }, [userDataFetched, userData])
 
