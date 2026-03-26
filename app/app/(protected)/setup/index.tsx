@@ -1,4 +1,3 @@
-import FieldHeading from '@/components/util/FieldHeading'
 import TextInputField from '@/components/util/TextInputField'
 import { SpaceGroteskText } from '@/utils/CustomFontText'
 import { Pressable, View } from 'react-native'
@@ -7,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { useState } from 'react'
 import { Image } from 'expo-image'
 import { backend } from '@/utils/axios/backend'
+import InputFieldWrapper from '@/components/util/InputFieldWrapper'
 
 export default function SetupScreen() {
   const [profilePicture, setProfilePicture] =
@@ -15,6 +15,8 @@ export default function SetupScreen() {
   const selectProfilePicture = async () => {
     const image = await ImagePicker.launchImageLibraryAsync({
       selectionLimit: 1,
+      aspect: [1, 1],
+      allowsEditing: true,
     })
     setProfilePicture(image)
   }
@@ -22,19 +24,26 @@ export default function SetupScreen() {
   const submit = async () => {
     const formData = new FormData()
     const asset = profilePicture?.assets?.[0]
-    console.log('Submitting setup with profile picture:', asset)
     if (asset) {
       formData.append('profilePicture', {
-        uri: asset.file,
-        name: asset.fileName,
+        uri: asset.uri,
         type: asset.mimeType,
+        name: asset.fileName,
       } as any)
+    } else {
+      formData.append('profilePicture', '')
     }
+    formData.append('setupData', JSON.stringify({ fullName: 'John Doe' }))
 
     try {
-      await backend.post('/users/setup', formData)
+      await backend.post('users/setup', formData, {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      })
     } catch (error) {
-      console.error('Error submitting setup:', error)
+      const err = error as any
+      console.error(err.response?.data || err.message)
     }
   }
 
@@ -49,7 +58,7 @@ export default function SetupScreen() {
         </SpaceGroteskText>
 
         <View className='gap-4'>
-          <FieldHeading heading='Profile Picture'>
+          <InputFieldWrapper heading='Profile Picture'>
             <Pressable
               className='bg-neutral-200 h-32 w-32 rounded-full items-center justify-center overflow-hidden'
               onPress={selectProfilePicture}
@@ -59,25 +68,25 @@ export default function SetupScreen() {
                 style={{ width: 128, aspectRatio: 1 }}
               />
             </Pressable>
-          </FieldHeading>
-          <FieldHeading heading='Full Name'>
+          </InputFieldWrapper>
+          <InputFieldWrapper heading='Full Name'>
             <TextInputField placeholder='Full Name' />
-          </FieldHeading>
-          <FieldHeading heading='Username'>
+          </InputFieldWrapper>
+          <InputFieldWrapper heading='Username'>
             <TextInputField placeholder='Username' />
-          </FieldHeading>
-          <FieldHeading heading='Weight (kg)'>
+          </InputFieldWrapper>
+          <InputFieldWrapper heading='Weight (kg)'>
             <TextInputField
               placeholder='Weight'
               keyboardType='numeric'
             />
-          </FieldHeading>
-          <FieldHeading heading='Height (cm)'>
+          </InputFieldWrapper>
+          <InputFieldWrapper heading='Height (cm)'>
             <TextInputField
               placeholder='Height'
               keyboardType='numeric'
             />
-          </FieldHeading>
+          </InputFieldWrapper>
           <Pressable
             className='bg-orange-400 rounded-md py-3 items-center'
             onPress={submit}

@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vedantyadu.workout.db.friendRequests.FriendRequests;
 import com.vedantyadu.workout.db.friendRequests.FriendRequestsRepository;
 import com.vedantyadu.workout.db.users.Users;
 import com.vedantyadu.workout.db.users.UsersRepository;
-import com.vedantyadu.workout.service.AWSS3Service;
+import com.vedantyadu.workout.service.GoogleCloudStorageService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -26,14 +27,15 @@ import jakarta.servlet.http.HttpServletRequest;
 public class UsersController {
 
     private UsersRepository usersRepository;
-    private AWSS3Service awsS3Service;
     private FriendRequestsRepository friendRequestsRepository;
+    private GoogleCloudStorageService googleCloudStorageService;
 
-    public UsersController(UsersRepository usersRepository, AWSS3Service awsS3Service,
-            FriendRequestsRepository friendRequestsRepository) {
+    public UsersController(UsersRepository usersRepository,
+            FriendRequestsRepository friendRequestsRepository,
+            GoogleCloudStorageService googleCloudStorageService) {
         this.usersRepository = usersRepository;
-        this.awsS3Service = awsS3Service;
         this.friendRequestsRepository = friendRequestsRepository;
+        this.googleCloudStorageService = googleCloudStorageService;
     }
 
     @GetMapping("/me")
@@ -79,8 +81,8 @@ public class UsersController {
     @PostMapping(value = "/setup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> completeSetup(
             HttpServletRequest request,
-            // @RequestPart UserSetupRequest setupRequest,
-            @RequestPart MultipartFile profilePicture) {
+            @RequestPart(value = "profilePicture", required = false) MultipartFile profilePicture,
+            @RequestPart("setupData") String setupRequest) {
 
         String userId = (String) request.getAttribute("userId");
 
@@ -92,16 +94,25 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
-        try {
-            String profilePictureUrl = awsS3Service.uploadFile(profilePicture.getResource().getFile());
-            user.setProfilePictureUrl(profilePictureUrl);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the image");
+        if (profilePicture != null && !profilePicture.isEmpty()) {
+            try {
+                String profilePictureUrl = googleCloudStorageService.uploadFile(profilePicture.getContentType(),
+                        profilePicture.getBytes());
+                user.setProfilePictureUrl(profilePictureUrl);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the image");
+            }
         }
 
-        // user.setFullName(setupRequest.getFullName());
-        user.setSetupComplete(true);
-        usersRepository.save(user);
+        try {
+            UserSetupRequestDTO userSetupRequest = new ObjectMapper().readValue(setupRequest,
+                    UserSetupRequestDTO.class);
+            user.setFullName(userSetupRequest.getFullName());
+            user.setSetupComplete(true);
+            usersRepository.save(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid setup data");
+        }
 
         return ResponseEntity.ok("User setup completed");
     }
@@ -155,13 +166,13 @@ class UserProfileDTO {
     }
 }
 
-class UserSetupRequest {
+class UserSetupRequestDTO {
     private String fullName;
 
-    public UserSetupRequest() {
+    public UserSetupRequestDTO() {
     }
 
-    public UserSetupRequest(String fullName) {
+    public UserSetupRequestDTO(String fullName) {
         this.fullName = fullName;
     }
 
