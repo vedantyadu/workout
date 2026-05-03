@@ -1,16 +1,18 @@
 import { UserContext, UserContextType } from '@/context/UserContext'
-import { router, Tabs } from 'expo-router'
+import { router, Tabs, useSegments } from 'expo-router'
 import { useContext, useLayoutEffect } from 'react'
 import {
   Activity,
   CirclePlus,
+  House,
   UserCircle2,
   UserStar,
 } from 'lucide-react-native'
+import TabNavBar from '@/components/util/TabNavBar'
 
 export default function ProtectedLayout() {
   const { userDataFetched, userData } = useContext(
-    UserContext
+    UserContext,
   ) as UserContextType
 
   useLayoutEffect(() => {
@@ -27,19 +29,16 @@ export default function ProtectedLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#fb923c',
-        tabBarInactiveTintColor: '#a3a3a3',
-        tabBarLabelStyle: {
-          fontFamily: 'SpaceGrotesk-Regular',
-        },
       }}
+      initialRouteName='post'
+      tabBar={(props) => null}
     >
       <Tabs.Screen
         name='index'
         options={{
-          title: 'Activity',
+          title: 'Home',
           tabBarIcon: ({ color }) => (
-            <Activity
+            <House
               size={20}
               color={color}
             />

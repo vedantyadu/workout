@@ -7,6 +7,8 @@ import { useState } from 'react'
 import { Image } from 'expo-image'
 import { backend } from '@/utils/axios/backend'
 import InputFieldWrapper from '@/components/util/InputFieldWrapper'
+import { ImagePlus } from 'lucide-react-native'
+import Touchable from '@/components/util/Touchable'
 
 export default function SetupScreen() {
   const [profilePicture, setProfilePicture] =
@@ -49,57 +51,53 @@ export default function SetupScreen() {
 
   return (
     <SafeAreaView className='flex-1 bg-neutral-100 p-4'>
-      <View className='gap-8'>
+      <View className='mb-4'>
         <SpaceGroteskText
           weight='bold'
-          className='text-neutral-600 text-4xl'
+          className='text-neutral-800 text-4xl'
         >
-          Complete your profile setup
+          Setup Your Profile
         </SpaceGroteskText>
-
-        <View className='gap-4'>
-          <InputFieldWrapper heading='Profile Picture'>
-            <Pressable
-              className='bg-neutral-200 h-32 w-32 rounded-full items-center justify-center overflow-hidden'
-              onPress={selectProfilePicture}
-            >
-              <Image
-                source={{ uri: profilePicture?.assets?.[0]?.uri }}
-                style={{ width: 128, aspectRatio: 1 }}
-              />
-            </Pressable>
-          </InputFieldWrapper>
-          <InputFieldWrapper heading='Full Name'>
-            <TextInputField placeholder='Full Name' />
-          </InputFieldWrapper>
-          <InputFieldWrapper heading='Username'>
-            <TextInputField placeholder='Username' />
-          </InputFieldWrapper>
-          <InputFieldWrapper heading='Weight (kg)'>
-            <TextInputField
-              placeholder='Weight'
-              keyboardType='numeric'
-            />
-          </InputFieldWrapper>
-          <InputFieldWrapper heading='Height (cm)'>
-            <TextInputField
-              placeholder='Height'
-              keyboardType='numeric'
-            />
-          </InputFieldWrapper>
-          <Pressable
-            className='bg-orange-400 rounded-md py-3 items-center'
-            onPress={submit}
-          >
-            <SpaceGroteskText
-              weight='medium'
-              className='text-neutral-50 text-center'
-            >
-              Submit
-            </SpaceGroteskText>
-          </Pressable>
-        </View>
       </View>
+
+      <View className='gap-2 mb-4'>
+        <Pressable
+          className='bg-neutral-200 h-32 w-32 rounded-full items-center justify-center overflow-hidden'
+          onPress={selectProfilePicture}
+        >
+          {profilePicture?.assets?.[0] ? (
+            <Image
+              source={{ uri: profilePicture?.assets?.[0]?.uri }}
+              style={{ width: 128, aspectRatio: 1 }}
+            />
+          ) : (
+            <ImagePlus size={32} color="#a3a3a3" />
+          )}
+        </Pressable>
+        <InputFieldWrapper heading='Username'>
+          <TextInputField placeholder='johndoe123' />
+        </InputFieldWrapper>
+        <InputFieldWrapper heading='Full Name'>
+          <TextInputField placeholder='John Doe' />
+        </InputFieldWrapper>
+        <InputFieldWrapper heading='Weight (kg)'>
+          <TextInputField
+            placeholder='Weight'
+            keyboardType='numeric'
+          />
+        </InputFieldWrapper>
+        <InputFieldWrapper heading='Height (cm)'>
+          <TextInputField
+            placeholder='Height'
+            keyboardType='numeric'
+
+          />
+        </InputFieldWrapper>
+
+      </View>
+      <Touchable>
+        <SpaceGroteskText weight='bold' className='text-white'>Submit</SpaceGroteskText>
+      </Touchable>
     </SafeAreaView>
   )
 }

@@ -3,4 +3,5 @@ export type UserDataType = {
   name: string
   googleId: string
   setupComplete: boolean
+  profilePictureUrl: string
 }

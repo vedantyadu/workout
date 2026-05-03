@@ -5,22 +5,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// import com.google.genai.Client;
-// import com.google.genai.types.GenerateContentResponse;
+import com.vedantyadu.workout.service.GoogleGeminiService;
 
 @RestController
 @RequestMapping("/post")
 public class PostController {
 
+    private GoogleGeminiService googleGeminiService;
+
+    public PostController(GoogleGeminiService googleGeminiService) {
+        this.googleGeminiService = googleGeminiService;
+    }
+
     @PostMapping("/create")
     public String createPost(
             @RequestBody PostDTO post) {
-        // Client client = new Client();
 
-        // GenerateContentResponse response =
-        // client.models.generateContent("gemini-2.5-flash", "", null);
+        String geminiResponse = googleGeminiService.generateContent("Say hello world!");
 
-        return "Post created successfully";
+        return geminiResponse;
     }
 }
 

@@ -7,12 +7,12 @@ export default function InputFieldWrapper({
   error,
 }: {
   heading: string
-  children: React.ReactNode
+  children?: React.ReactNode
   error?: string
 }) {
   return (
     <View className='flex flex-col gap-1'>
-      <SpaceGroteskText className='text-sm text-neutral-600'>
+      <SpaceGroteskText weight='semi-bold' className='text-xs text-neutral-600'>
         {heading}
       </SpaceGroteskText>
       {children}

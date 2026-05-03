@@ -1,5 +1,6 @@
 package com.vedantyadu.workout.controller.users;
 
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import com.vedantyadu.workout.db.friendRequests.FriendRequests;
 import com.vedantyadu.workout.db.friendRequests.FriendRequestsRepository;
 import com.vedantyadu.workout.db.users.Users;
 import com.vedantyadu.workout.db.users.UsersRepository;
-import com.vedantyadu.workout.service.GoogleCloudStorageService;
+import com.vedantyadu.workout.service.CloudinaryService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -28,14 +29,13 @@ public class UsersController {
 
     private UsersRepository usersRepository;
     private FriendRequestsRepository friendRequestsRepository;
-    private GoogleCloudStorageService googleCloudStorageService;
+    private CloudinaryService cloudinaryService;
 
     public UsersController(UsersRepository usersRepository,
-            FriendRequestsRepository friendRequestsRepository,
-            GoogleCloudStorageService googleCloudStorageService) {
+            FriendRequestsRepository friendRequestsRepository, CloudinaryService cloudinaryService) {
         this.usersRepository = usersRepository;
         this.friendRequestsRepository = friendRequestsRepository;
-        this.googleCloudStorageService = googleCloudStorageService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @GetMapping("/me")
@@ -96,9 +96,9 @@ public class UsersController {
 
         if (profilePicture != null && !profilePicture.isEmpty()) {
             try {
-                String profilePictureUrl = googleCloudStorageService.uploadFile(profilePicture.getContentType(),
-                        profilePicture.getBytes());
-                user.setProfilePictureUrl(profilePictureUrl);
+                Map uploadResult = cloudinaryService.uploadFile(profilePicture);
+                String imageUrl = (String) uploadResult.get("secure_url");
+                user.setProfilePictureUrl(imageUrl);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the image");
             }
@@ -123,12 +123,14 @@ class UserDTO {
     private String name;
     private String googleId;
     private boolean setupComplete;
+    private String profilePictureUrl;
 
     public UserDTO(Users user) {
         this.id = user.getId();
         this.googleId = user.getGoogleId();
         this.name = user.getFullName();
         this.setupComplete = user.getSetupComplete();
+        this.profilePictureUrl = user.getProfilePictureUrl();
     }
 
     public String getId() {
@@ -145,6 +147,10 @@ class UserDTO {
 
     public boolean getSetupComplete() {
         return setupComplete;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
     }
 }
 

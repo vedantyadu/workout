@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router'
 import 'react-native-reanimated'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import '../global.css'
 import { useEffect } from 'react'
 import { Platform } from 'react-native'
@@ -44,19 +45,21 @@ export default function RootLayout() {
   }
 
   return (
-    <UserProvider>
-      <DeepLinkProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            statusBarStyle: 'dark',
-          }}
-        >
-          <Stack.Screen name='(protected)/default' />
-          <Stack.Screen name='signin' />
-          <Stack.Screen name='auth/index' />
-        </Stack>
-      </DeepLinkProvider>
-    </UserProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <UserProvider>
+        <DeepLinkProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              statusBarStyle: 'dark',
+            }}
+          >
+            <Stack.Screen name='(protected)/default' />
+            <Stack.Screen name='signin' />
+            <Stack.Screen name='auth/index' />
+          </Stack>
+        </DeepLinkProvider>
+      </UserProvider>
+    </GestureHandlerRootView>
   )
 }

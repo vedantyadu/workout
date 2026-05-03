@@ -1,4 +1,5 @@
 import { Text } from 'react-native'
+import { twMerge } from 'tailwind-merge'
 
 export function GeistText({
   weight,
@@ -45,6 +46,7 @@ export function SpaceGroteskText({
   weight,
   children,
   style,
+  className,
   ...props
 }: React.ComponentProps<typeof Text> & {
   weight?: 'light' | 'regular' | 'medium' | 'semi-bold' | 'bold'
@@ -73,6 +75,7 @@ export function SpaceGroteskText({
   }
   return (
     <Text
+      className={twMerge('text-neutral-800', className)}
       style={[style, { fontFamily: fontString }]}
       {...props}
     >

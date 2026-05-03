@@ -1,0 +1,10 @@
+import React, { PropsWithChildren } from 'react'
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native'
+
+export default function Touchable({ children, className, ...props }: PropsWithChildren<TouchableOpacityProps>) {
+  return (
+    <TouchableOpacity {...props} className={`bg-orange-500 rounded-lg p-3 items-center justify-center flex-row gap-2 ${className}`} >
+      {children}
+    </TouchableOpacity>
+  )
+}
