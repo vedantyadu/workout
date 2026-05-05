@@ -1,11 +1,14 @@
+import Touchable from "@/components/util/Touchable";
 import { usePostContext } from "@/context/PostContext";
-import { SpaceGroteskText } from "@/utils/CustomFontText";
-import { Minus, Plus } from "lucide-react-native";
+import { OutfitText } from "@/utils/CustomFontText";
+import { Check, Minus, Plus } from "lucide-react-native";
 import { useRef } from "react";
 import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SelectDuration({ setSheetOpen }: { setSheetOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { newPostData, setNewPostData } = usePostContext();
+  const inset = useSafeAreaInsets()
 
   const updateHours = (val: string) => {
     setNewPostData(prev => ({
@@ -56,25 +59,28 @@ export default function SelectDuration({ setSheetOpen }: { setSheetOpen: React.D
 
   return (
     <View className='flex-1'>
-      <View className='flex-row justify-between items-center px-6 pb-4 border-b border-neutral-100'>
-        <SpaceGroteskText weight='bold' className='text-xl text-neutral-800'>Set Duration</SpaceGroteskText>
-        <TouchableOpacity onPress={() => setSheetOpen(false)}>
-          <SpaceGroteskText weight='medium' className='text-orange-500'>Done</SpaceGroteskText>
+      <View className='flex-row justify-between items-center px-4 pb-2'>
+        <OutfitText weight='bold' className=' text-neutral-800'>Set Duration</OutfitText>
+        <TouchableOpacity onPress={() => {
+          setNewPostData(prev => ({ ...prev, duration: { hours: "", minutes: "" } }))
+          setSheetOpen(false)
+        }}>
+          <OutfitText weight='medium' className='text-orange-500 text-sm'>Reset</OutfitText>
         </TouchableOpacity>
       </View>
 
-      <ScrollView className='flex-1 px-6' contentContainerStyle={{ paddingVertical: 24 }}>
-        <View className='gap-8'>
+      <ScrollView className='flex-1 px-4'>
+        <View className='gap-4'>
           {/* Hours Selector */}
-          <View className='gap-4'>
-            <SpaceGroteskText weight='medium' className='text-neutral-500 uppercase text-xs tracking-widest'>Hours</SpaceGroteskText>
-            <View className='flex-row items-center justify-between bg-neutral-50 p-4 rounded-2xl border border-neutral-100'>
+          <View className='gap-2'>
+            <OutfitText weight='medium' className='text-neutral-500 text-sm'>Hours</OutfitText>
+            <View className='flex-row items-center justify-between'>
               <TouchableOpacity
                 onPressIn={() => startAdjusting(adjustHours, -1)}
                 onPressOut={stopAdjusting}
-                className='bg-white size-12 rounded-xl items-center justify-center shadow-sm border border-neutral-100'
+                className='bg-neutral-100 size-12 rounded-full items-center justify-center'
               >
-                <Minus size={20} color="#525252" />
+                <Minus size={20} color="#a3a3a3" />
               </TouchableOpacity>
 
               <View className='flex-row items-baseline gap-2'>
@@ -83,34 +89,33 @@ export default function SelectDuration({ setSheetOpen }: { setSheetOpen: React.D
                   onChangeText={updateHours}
                   keyboardType='numeric'
                   placeholder='0'
-                  style={{ fontFamily: 'SpaceGrotesk-Bold' }}
-                  className='text-4xl text-neutral-800 min-w-[40px] text-center'
+                  className='text-4xl text-neutral-800 min-w-[40px] text-center font-outfitMedium'
                   placeholderTextColor="#d4d4d4"
                   underlineColorAndroid='transparent'
                 />
-                <SpaceGroteskText className='text-neutral-400 text-lg'>hrs</SpaceGroteskText>
+                <OutfitText className='text-neutral-400 text-lg'>hrs</OutfitText>
               </View>
 
               <TouchableOpacity
                 onPressIn={() => startAdjusting(adjustHours, 1)}
                 onPressOut={stopAdjusting}
-                className='bg-white size-12 rounded-xl items-center justify-center shadow-sm border border-neutral-100'
+                className='bg-neutral-100 size-12 rounded-full items-center justify-center'
               >
-                <Plus size={20} color="#525252" />
+                <Plus size={20} color="#a3a3a3" />
               </TouchableOpacity>
             </View>
           </View>
 
           {/* Minutes Selector */}
-          <View className='gap-4'>
-            <SpaceGroteskText weight='medium' className='text-neutral-500 uppercase text-xs tracking-widest'>Minutes</SpaceGroteskText>
-            <View className='flex-row items-center justify-between bg-neutral-50 p-4 rounded-2xl border border-neutral-100'>
+          <View className='gap-2'>
+            <OutfitText weight='medium' className='text-neutral-500 text-sm'>Minutes</OutfitText>
+            <View className='flex-row items-center justify-between rounded-2xl'>
               <TouchableOpacity
                 onPressIn={() => startAdjusting(adjustMinutes, -5)}
                 onPressOut={stopAdjusting}
-                className='bg-white size-12 rounded-xl items-center justify-center shadow-sm border border-neutral-100'
+                className='bg-neutral-100 size-12 rounded-full items-center justify-center'
               >
-                <Minus size={20} color="#525252" />
+                <Minus size={20} color="#a3a3a3" />
               </TouchableOpacity>
 
               <View className='flex-row items-baseline gap-2'>
@@ -118,26 +123,34 @@ export default function SelectDuration({ setSheetOpen }: { setSheetOpen: React.D
                   value={newPostData.duration.minutes}
                   onChangeText={updateMinutes}
                   keyboardType='numeric'
-                  placeholder='0'
-                  style={{ fontFamily: 'SpaceGrotesk-Bold' }}
-                  className='text-4xl text-neutral-800 min-w-[40px] text-center'
+                  placeholder='12'
+                  className='text-4xl text-neutral-800 min-w-[40px] text-center font-outfitMedium'
                   placeholderTextColor="#d4d4d4"
                   underlineColorAndroid='transparent'
                 />
-                <SpaceGroteskText className='text-neutral-400 text-lg'>min</SpaceGroteskText>
+                <OutfitText className='text-neutral-400'>min</OutfitText>
               </View>
 
               <TouchableOpacity
                 onPressIn={() => startAdjusting(adjustMinutes, 10)}
                 onPressOut={stopAdjusting}
-                className='bg-white size-12 rounded-xl items-center justify-center shadow-sm border border-neutral-100'
+                className='bg-neutral-100 size-12 rounded-full items-center justify-center'
               >
-                <Plus size={20} color="#525252" />
+                <Plus size={20} color="#a3a3a3" />
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </ScrollView>
+
+      <View className="px-4 py-4 gap-2">
+        <Touchable onPress={() => setSheetOpen(false)}>
+          <Check size={20} color="#fff" />
+          <OutfitText weight='semi-bold' className="text-white">Done</OutfitText>
+        </Touchable>
+      </View>
+
+      <View className="bg-white" style={{ height: inset.bottom }} />
     </View>
   );
 }

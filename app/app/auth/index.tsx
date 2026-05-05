@@ -1,5 +1,5 @@
 import { DeepLinkContext, DeepLinkContextType } from '@/context/DeepLinkContext'
-import { SpaceGroteskText } from '@/utils/CustomFontText'
+import { OutfitText } from '@/utils/CustomFontText'
 import { useContext, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Linking from 'expo-linking'
@@ -45,9 +45,9 @@ export default function AuthScreen() {
         size={48}
         color={'#fb923c'}
       />
-      <SpaceGroteskText className='text-neutral-500 mt-4 text-sm'>
+      <OutfitText className='text-neutral-500 mt-4 text-sm'>
         Signing you in
-      </SpaceGroteskText>
+      </OutfitText>
     </SafeAreaView>
   )
 }

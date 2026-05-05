@@ -1,6 +1,6 @@
 import { Image } from 'expo-image'
 import { View, Pressable } from 'react-native'
-import { SpaceGroteskText } from '@/utils/CustomFontText'
+import { OutfitText } from '@/utils/CustomFontText'
 import * as WebBrowser from 'expo-web-browser'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -38,32 +38,32 @@ export default function SignInScreen() {
             source={appLogo}
             style={{ height: 64, aspectRatio: 1 }}
           />
-          <SpaceGroteskText
+          <OutfitText
             weight='medium'
             className='text-neutral-400 text-xs'
           >
             Workout, Out Loud.
-          </SpaceGroteskText>
+          </OutfitText>
         </View>
         <View className='items-center w-full gap-4'>
-          <SpaceGroteskText
+          <OutfitText
             weight='bold'
             className='text-xl text-neutral-600'
           >
             Sign in or Create an Account to Continue.
-          </SpaceGroteskText>
+          </OutfitText>
           <Pressable className='flex-row items-center justify-center px-6 py-4 border border-neutral-400 rounded-lg gap-4 w-full'>
             <Image
               source={googleIcon}
               style={{ width: 16, height: 16 }}
             />
-            <SpaceGroteskText
+            <OutfitText
               weight='semi-bold'
               className='text-sm text-neutral-500'
               onPress={handleGoogleSignInPress}
             >
               Continue with Google
-            </SpaceGroteskText>
+            </OutfitText>
           </Pressable>
         </View>
       </View>

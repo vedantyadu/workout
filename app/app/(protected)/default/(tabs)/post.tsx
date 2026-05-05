@@ -1,4 +1,4 @@
-import { SpaceGroteskText } from "@/utils/CustomFontText";
+import { OutfitText } from "@/utils/CustomFontText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { View } from "react-native";
 import { Activity, MessageCirclePlus } from "lucide-react-native";
@@ -14,29 +14,25 @@ export default function PostScreen() {
 
   return (
     <>
-      <View className="flex-1 bg-neutral-100" style={{ paddingTop: inset.top }}>
+      <View className="flex-1 bg-neutral-50" style={{ paddingTop: inset.top }}>
         <View className="p-4 flex-1">
-          <SpaceGroteskText weight='bold' className='text-2xl mb-4'>
+          <OutfitText weight='bold' className='text-2xl mb-4'>
             Create a New Post
-          </SpaceGroteskText>
+          </OutfitText>
           <View className="flex-col gap-2">
             <PostTypeTouchable
-              icon={<Activity color="#a3a3a3" size={24} />}
+              icon={<Activity color="#f97316" size={20} />}
               title="Activity"
               description="Log your workout"
               onPress={() => router.push('/default/post/activity')} />
             <PostTypeTouchable
-              icon={<MessageCirclePlus color="#a3a3a3" size={24} />}
+              icon={<MessageCirclePlus color="#f97316" size={20} />}
               title="Update"
               description="Share your thoughts"
               onPress={() => router.push('/default/post/update')} />
           </View>
         </View>
       </View>
-      <TabNavBar
-        currentRoute="/default/post"
-        tabs={navbarTabs}
-      />
     </>
   )
 }

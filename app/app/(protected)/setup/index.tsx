@@ -1,5 +1,5 @@
 import TextInputField from '@/components/util/TextInputField'
-import { SpaceGroteskText } from '@/utils/CustomFontText'
+import { OutfitText } from '@/utils/CustomFontText'
 import { Pressable, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
@@ -52,12 +52,12 @@ export default function SetupScreen() {
   return (
     <SafeAreaView className='flex-1 bg-neutral-100 p-4'>
       <View className='mb-4'>
-        <SpaceGroteskText
+        <OutfitText
           weight='bold'
           className='text-neutral-800 text-4xl'
         >
           Setup Your Profile
-        </SpaceGroteskText>
+        </OutfitText>
       </View>
 
       <View className='gap-2 mb-4'>
@@ -96,7 +96,7 @@ export default function SetupScreen() {
 
       </View>
       <Touchable>
-        <SpaceGroteskText weight='bold' className='text-white'>Submit</SpaceGroteskText>
+        <OutfitText weight='bold' className='text-white'>Submit</OutfitText>
       </Touchable>
     </SafeAreaView>
   )

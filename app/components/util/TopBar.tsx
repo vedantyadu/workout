@@ -1,4 +1,4 @@
-import { SpaceGroteskText } from "@/utils/CustomFontText";
+import { OutfitText } from "@/utils/CustomFontText";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
@@ -20,9 +20,9 @@ export default function TopBar({ title, onBack }: { title: string, onBack?: () =
 					<ArrowLeft size={20} color='#a3a3a3' />
 				</TouchableOpacity>
 				<View className="flex-1 justify-center">
-					<SpaceGroteskText weight='bold' className="text-lg text-neutral-800 leading-tight">
+					<OutfitText weight='semi-bold' className="text-lg text-neutral-800 leading-tight">
 						{title}
-					</SpaceGroteskText>
+					</OutfitText>
 				</View>
 			</View>
 		</View>

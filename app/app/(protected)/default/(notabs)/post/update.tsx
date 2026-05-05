@@ -1,7 +1,7 @@
 import InputFieldWrapper from "@/components/util/InputFieldWrapper";
 import TextInputField from "@/components/util/TextInputField";
 import Touchable from "@/components/util/Touchable";
-import { SpaceGroteskText } from "@/utils/CustomFontText";
+import { OutfitText } from "@/utils/CustomFontText";
 import { CircleCheckBig } from "lucide-react-native";
 import { useState } from "react";
 import { ActivityIndicator, KeyboardAvoidingView, ScrollView, View } from "react-native";
@@ -38,7 +38,7 @@ export default function PostUpdateScreen() {
               <ActivityIndicator color='#fff' />
             ) : (
               <>
-                <SpaceGroteskText weight='bold' className='text-white'>Post</SpaceGroteskText>
+                <OutfitText weight='bold' className='text-white'>Post</OutfitText>
                 <View className='size-4'>
                   <CircleCheckBig color="white" size={16} />
                 </View>

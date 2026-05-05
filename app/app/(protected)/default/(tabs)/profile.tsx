@@ -1,7 +1,7 @@
 import TabNavBar from '@/components/util/TabNavBar'
 import { UserContext, UserContextType } from '@/context/UserContext'
 import { removeAccessToken, removeRefreshToken } from '@/utils/auth'
-import { SpaceGroteskText } from '@/utils/CustomFontText'
+import { OutfitText } from '@/utils/CustomFontText'
 import { navbarTabs } from '@/utils/navbar/navbarTabs'
 import { useContext } from 'react'
 import { Pressable, View } from 'react-native'
@@ -20,24 +20,20 @@ export default function ProfileScreen() {
     <>
       <View className='flex-1'>
         <View className='flex-1 bg-neutral-100 p-4'>
-          <SpaceGroteskText
+          <OutfitText
             className='text-neutral-400 text-sm'
             weight='medium'
           >
             @ {userData?.id}
-          </SpaceGroteskText>
+          </OutfitText>
           <Pressable
             className='px-4 py-3'
             onPress={logout}
           >
-            <SpaceGroteskText>Logout</SpaceGroteskText>
+            <OutfitText>Logout</OutfitText>
           </Pressable>
         </View>
       </View>
-      <TabNavBar
-        currentRoute="/default/profile"
-        tabs={navbarTabs}
-      />
     </>
   )
 }

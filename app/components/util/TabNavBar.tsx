@@ -1,7 +1,6 @@
-import { TabNavbarPropsType } from "@/types/tabNavbar";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useRouter } from "expo-router";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { TouchableOpacity, View, useWindowDimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -10,20 +9,20 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function TabNavBar({ tabs, currentRoute }: TabNavbarPropsType) {
+export default function TabNavBar({ navigation, state, descriptors }: BottomTabBarProps) {
 
   const { width: windowWidth } = useWindowDimensions();
   const horizontalPadding = 8;
-  const numTabs = tabs.length;
+  const numTabs = state.routes.length;
   const tabWidth = (windowWidth - (horizontalPadding * 2)) / numTabs;
-  const positionX = useSharedValue(tabs.findIndex(t => t.route === currentRoute) * tabWidth + horizontalPadding);
+  const positionX = useSharedValue(state.index * tabWidth + horizontalPadding);
 
   const inset = useSafeAreaInsets();
   const router = useRouter()
 
   useEffect(() => {
-    positionX.value = withTiming(tabs.findIndex(t => t.route === currentRoute) * tabWidth + horizontalPadding, { duration: 150 });
-  }, [currentRoute, tabWidth]);
+    positionX.value = withTiming(state.index * tabWidth + horizontalPadding, { duration: 150 });
+  }, [state.index, tabWidth]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -37,17 +36,18 @@ export default function TabNavBar({ tabs, currentRoute }: TabNavbarPropsType) {
       style={{ paddingBottom: inset.bottom }}
     >
       <View className="flex-row py-2" style={{ paddingHorizontal: horizontalPadding }}>
-        {tabs.map((tab, index) => {
-          const active = currentRoute === tab.route;
-          const Icon = tab.icon
+        {state.routes.map((route, index) => {
+          const active = state.index === index;
+          const { tabBarIcon } = descriptors[route.key].options
+          const icon = tabBarIcon?.({ focused: active, color: active ? "#fb923c" : "#a3a3a3", size: 20 })
 
           return (
             <TouchableOpacity
-              key={tab.route.toString()}
-              onPress={() => router.navigate(tab.route)}
+              key={route.key}
+              onPress={() => navigation.navigate(route.name)}
               className="flex-1 justify-center items-center py-2"
             >
-              <Icon active={active} />
+              {icon}
             </TouchableOpacity>
           );
         })}

@@ -83,3 +83,49 @@ export function SpaceGroteskText({
     </Text>
   )
 }
+
+export function OutfitText({
+  weight,
+  children,
+  style,
+  className,
+  ...props
+}: React.ComponentProps<typeof Text> & {
+  weight?: 'light' | 'regular' | 'medium' | 'semi-bold' | 'bold' | 'extra-bold'
+}) {
+  let fontString: string
+  switch (weight) {
+    case 'light':
+      fontString = 'Outfit-Light'
+      break
+    case 'regular':
+      fontString = 'Outfit-Regular'
+      break
+    case 'medium':
+      fontString = 'Outfit-Medium'
+      break
+    case 'semi-bold':
+      fontString = 'Outfit-SemiBold'
+      break
+    case 'bold':
+      fontString = 'Outfit-Bold'
+      break
+    case 'extra-bold':
+      fontString = 'Outfit-ExtraBold'
+      break
+    default:
+      fontString = 'Outfit-Regular'
+      break
+  }
+
+  return (
+    <Text
+      className={twMerge('text-neutral-800', className)}
+      style={[style, { fontFamily: fontString }]}
+      {...props}
+    >
+      {children}
+    </Text>
+  )
+
+}

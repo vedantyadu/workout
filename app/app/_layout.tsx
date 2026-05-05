@@ -20,6 +20,13 @@ const SpaceGroteskMedium = require('../assets/fonts/SpaceGrotesk-Medium.ttf')
 const SpaceGroteskSemiBold = require('../assets/fonts/SpaceGrotesk-SemiBold.ttf')
 const SpaceGroteskBold = require('../assets/fonts/SpaceGrotesk-Bold.ttf')
 
+const OutfitLight = require('../assets/fonts/Outfit-Light.ttf')
+const OutfitRegular = require('../assets/fonts/Outfit-Regular.ttf')
+const OutfitMedium = require('../assets/fonts/Outfit-Medium.ttf')
+const OutfitSemiBold = require('../assets/fonts/Outfit-SemiBold.ttf')
+const OutfitBold = require('../assets/fonts/Outfit-Bold.ttf')
+const OutfitExtraBold = require('../assets/fonts/Outfit-ExtraBold.ttf')
+
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     'Geist-Regular': GesitRegular,
@@ -32,6 +39,12 @@ export default function RootLayout() {
     'SpaceGrotesk-Medium': SpaceGroteskMedium,
     'SpaceGrotesk-SemiBold': SpaceGroteskSemiBold,
     'SpaceGrotesk-Bold': SpaceGroteskBold,
+    'Outfit-Light': OutfitLight,
+    'Outfit-Regular': OutfitRegular,
+    'Outfit-Medium': OutfitMedium,
+    'Outfit-SemiBold': OutfitSemiBold,
+    'Outfit-Bold': OutfitBold,
+    'Outfit-ExtraBold': OutfitExtraBold,
   })
 
   useEffect(() => {

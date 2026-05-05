@@ -1,4 +1,4 @@
-import { SpaceGroteskText } from '@/utils/CustomFontText'
+import { OutfitText } from '@/utils/CustomFontText'
 import { View } from 'react-native'
 
 export default function InputFieldWrapper({
@@ -11,15 +11,15 @@ export default function InputFieldWrapper({
   error?: string
 }) {
   return (
-    <View className='flex flex-col gap-1'>
-      <SpaceGroteskText weight='semi-bold' className='text-xs text-neutral-600'>
+    <View className='flex flex-col gap-2'>
+      <OutfitText weight='medium' className='text-xs text-neutral-500'>
         {heading}
-      </SpaceGroteskText>
+      </OutfitText>
       {children}
       {error && (
-        <SpaceGroteskText className='text-sm text-red-500'>
+        <OutfitText className='text-xs text-red-500'>
           {error}
-        </SpaceGroteskText>
+        </OutfitText>
       )}
     </View>
   )
