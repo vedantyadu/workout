@@ -9,19 +9,24 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function TabNavBar({ navigation, state, descriptors }: BottomTabBarProps) {
-
+export default function TabNavBar({
+  navigation,
+  state,
+  descriptors,
+}: BottomTabBarProps) {
   const { width: windowWidth } = useWindowDimensions();
   const horizontalPadding = 8;
   const numTabs = state.routes.length;
-  const tabWidth = (windowWidth - (horizontalPadding * 2)) / numTabs;
+  const tabWidth = (windowWidth - horizontalPadding * 2) / numTabs;
   const positionX = useSharedValue(state.index * tabWidth + horizontalPadding);
 
   const inset = useSafeAreaInsets();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    positionX.value = withTiming(state.index * tabWidth + horizontalPadding, { duration: 150 });
+    positionX.value = withTiming(state.index * tabWidth + horizontalPadding, {
+      duration: 150,
+    });
   }, [state.index, tabWidth]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -32,14 +37,21 @@ export default function TabNavBar({ navigation, state, descriptors }: BottomTabB
 
   return (
     <View
-      className="bg-white relative bottom-0 left-0 w-full"
+      className="bg-white relative bottom-0 left-0 w-full border-t border-neutral-100"
       style={{ paddingBottom: inset.bottom }}
     >
-      <View className="flex-row py-2" style={{ paddingHorizontal: horizontalPadding }}>
+      <View
+        className="flex-row py-2"
+        style={{ paddingHorizontal: horizontalPadding }}
+      >
         {state.routes.map((route, index) => {
           const active = state.index === index;
-          const { tabBarIcon } = descriptors[route.key].options
-          const icon = tabBarIcon?.({ focused: active, color: active ? "#fb923c" : "#a3a3a3", size: 20 })
+          const { tabBarIcon } = descriptors[route.key].options;
+          const icon = tabBarIcon?.({
+            focused: active,
+            color: active ? "#fb923c" : "#a3a3a3",
+            size: 20,
+          });
 
           return (
             <TouchableOpacity

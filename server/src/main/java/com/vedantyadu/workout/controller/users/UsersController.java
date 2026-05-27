@@ -1,6 +1,5 @@
 package com.vedantyadu.workout.controller.users;
 
-import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -15,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vedantyadu.workout.db.friendRequests.FriendRequests;
-import com.vedantyadu.workout.db.friendRequests.FriendRequestsRepository;
-import com.vedantyadu.workout.db.users.Users;
-import com.vedantyadu.workout.db.users.UsersRepository;
-import com.vedantyadu.workout.service.CloudinaryService;
+import com.vedantyadu.workout.db.FriendRequests;
+import com.vedantyadu.workout.repository.FriendRequestsRepository;
+import com.vedantyadu.workout.db.Users;
+import com.vedantyadu.workout.repository.UsersRepository;
+import com.vedantyadu.workout.service.GoogleCloudStorageService;
+import com.vedantyadu.workout.utils.enums.StorageFolder;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -29,13 +29,14 @@ public class UsersController {
 
     private UsersRepository usersRepository;
     private FriendRequestsRepository friendRequestsRepository;
-    private CloudinaryService cloudinaryService;
+    private GoogleCloudStorageService googleCloudStorageService;
 
     public UsersController(UsersRepository usersRepository,
-            FriendRequestsRepository friendRequestsRepository, CloudinaryService cloudinaryService) {
+            FriendRequestsRepository friendRequestsRepository,
+            GoogleCloudStorageService googleCloudStorageService) {
         this.usersRepository = usersRepository;
         this.friendRequestsRepository = friendRequestsRepository;
-        this.cloudinaryService = cloudinaryService;
+        this.googleCloudStorageService = googleCloudStorageService;
     }
 
     @GetMapping("/me")
@@ -75,7 +76,7 @@ public class UsersController {
         FriendRequests friendRequests = new FriendRequests(sender, receiver);
         friendRequestsRepository.save(friendRequests);
 
-        return ResponseEntity.ok("Friend request sent to user with id: " + id);
+        return ResponseEntity.ok("Friend request sent to user_id: " + id);
     }
 
     @PostMapping(value = "/setup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -86,8 +87,6 @@ public class UsersController {
 
         String userId = (String) request.getAttribute("userId");
 
-        System.out.println("Received setup request for userId: " + userId);
-
         Users user = usersRepository.findById(userId).orElse(null);
 
         if (user == null) {
@@ -96,9 +95,9 @@ public class UsersController {
 
         if (profilePicture != null && !profilePicture.isEmpty()) {
             try {
-                Map uploadResult = cloudinaryService.uploadFile(profilePicture);
-                String imageUrl = (String) uploadResult.get("secure_url");
-                user.setProfilePictureUrl(imageUrl);
+                String imageUrl = googleCloudStorageService.uploadFile(profilePicture.getContentType(),
+                        profilePicture.getBytes(), StorageFolder.PROFILE_PICTURE);
+                user.setProfilePictureURL(imageUrl);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the image");
             }
@@ -130,7 +129,7 @@ class UserDTO {
         this.googleId = user.getGoogleId();
         this.name = user.getFullName();
         this.setupComplete = user.getSetupComplete();
-        this.profilePictureUrl = user.getProfilePictureUrl();
+        this.profilePictureUrl = user.getProfilePictureURL();
     }
 
     public String getId() {
@@ -174,12 +173,14 @@ class UserProfileDTO {
 
 class UserSetupRequestDTO {
     private String fullName;
+    private String username;
 
     public UserSetupRequestDTO() {
     }
 
-    public UserSetupRequestDTO(String fullName) {
+    public UserSetupRequestDTO(String fullName, String username) {
         this.fullName = fullName;
+        this.username = username;
     }
 
     public String getFullName() {
@@ -188,5 +189,13 @@ class UserSetupRequestDTO {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

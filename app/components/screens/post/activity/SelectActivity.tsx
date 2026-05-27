@@ -1,11 +1,17 @@
-import { usePostContext } from "@/context/PostContext"
-import { OutfitText } from "@/utils/CustomFontText"
-import { Check, Circle, CircleCheck, CircleX, RefreshCcw, Undo2 } from "lucide-react-native"
-import { ScrollView, TouchableOpacity, View } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { LinearGradient } from 'expo-linear-gradient';
+import { usePostContext } from '@/context/PostContext'
+import { OutfitText } from '@/utils/CustomFontText'
+import {
+  Check,
+  Circle,
+  CircleCheck,
+  CircleX,
+  RefreshCcw,
+  Undo2,
+} from 'lucide-react-native'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-const activities = [
+const ACTIVITIES = [
   'Running',
   'Cycling',
   'Weight Training',
@@ -34,45 +40,60 @@ const activities = [
   'Other',
 ]
 
-export default function SelectActivity({ setSheetOpen }: { setSheetOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
-
-  const { newPostData, setNewPostData } = usePostContext()
+export default function SelectActivity({
+  value,
+  setValue,
+  setSheetOpen,
+}: {
+  value: string | null
+  setValue: (value: string | null) => void
+  setSheetOpen: React.Dispatch<React.SetStateAction<boolean>>
+}) {
   const inset = useSafeAreaInsets()
 
   return (
     <>
       <View className='flex-row justify-between items-center px-4 pb-2'>
         <OutfitText weight='bold'>Select Activity Type</OutfitText>
-        {newPostData.activity && <View>
-          <View className="items-center">
-            <TouchableOpacity onPress={() => {
-              setNewPostData((f) => ({ ...f, activity: null }))
-              setSheetOpen(false)
-            }}>
-              <OutfitText weight="medium" className="text-orange-500 text-sm">Reset</OutfitText>
-            </TouchableOpacity>
+        {value && (
+          <View>
+            <View className='items-center'>
+              <TouchableOpacity
+                onPress={() => {
+                  setValue(null)
+                  setSheetOpen(false)
+                }}
+              >
+                <OutfitText
+                  weight='semi-bold'
+                  className='text-orange-500 text-sm'
+                >
+                  Reset
+                </OutfitText>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>}
+        )}
       </View>
       <View className='flex-1'>
         <ScrollView>
-          <View className="px-4">
-            {activities.map((activity) => (
+          <View className='px-4'>
+            {ACTIVITIES.map((activity) => (
               <TouchableOpacity
                 key={activity}
                 onPress={() => {
-                  setNewPostData((f) => ({ ...f, activity }))
+                  setValue(activity)
                   setSheetOpen(false)
                 }}
                 className={`flex-row py-3 items-center gap-2`}
               >
                 <OutfitText
-                  className={`text-sm ${newPostData.activity == activity ? 'text-orange-500' : 'text-neutral-600'} flex-1`}
+                  className={`text-sm ${value == activity ? 'text-orange-500' : 'text-neutral-600'} flex-1`}
                   numberOfLines={1}
                 >
                   {activity}
                 </OutfitText>
-                {newPostData.activity == activity ? (
+                {value == activity ? (
                   <CircleCheck
                     color='#f97316'
                     size={20}
@@ -88,7 +109,10 @@ export default function SelectActivity({ setSheetOpen }: { setSheetOpen: React.D
           </View>
         </ScrollView>
 
-        <View className="bg-white" style={{ height: inset.bottom }} />
+        <View
+          className='bg-white'
+          style={{ height: inset.bottom }}
+        />
       </View>
     </>
   )

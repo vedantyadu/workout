@@ -3,18 +3,19 @@ package com.vedantyadu.workout.controller.friends;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vedantyadu.workout.db.friends.Friends;
-import com.vedantyadu.workout.db.friends.FriendsRepository;
+import com.vedantyadu.workout.db.Friends;
+import com.vedantyadu.workout.repository.FriendsRepository;
 
-class FriendDTO {
+class FriendsDTO {
     private String id;
     private String name;
 
-    public FriendDTO(String id, String name) {
+    public FriendsDTO(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -38,12 +39,12 @@ public class FriendsController {
         this.friendsRepository = friendsRepository;
     }
 
-    @RequestMapping("/")
-    public ResponseEntity<List<FriendDTO>> getFriendsList(@RequestAttribute("userId") String userId) {
+    @GetMapping("/")
+    public ResponseEntity<List<FriendsDTO>> getFriendsList(@RequestAttribute("userId") String userId) {
         List<Friends> friends = friendsRepository.findByUserId(userId);
-        List<FriendDTO> friendDTOs = friends.stream()
-                .map(friend -> new FriendDTO(friend.getFriend().getId(), friend.getFriend().getFullName()))
+        List<FriendsDTO> friendsDTOs = friends.stream()
+                .map(friend -> new FriendsDTO(friend.getFriend().getId(), friend.getFriend().getFullName()))
                 .toList();
-        return ResponseEntity.ok(friendDTOs);
+        return ResponseEntity.ok(friendsDTOs);
     }
 }

@@ -1,11 +1,11 @@
-package com.vedantyadu.workout.db.friendRequests;
+package com.vedantyadu.workout.db;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
 import java.util.List;
+import java.util.UUID;
 
-import com.vedantyadu.workout.db.users.Users;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,8 +23,8 @@ enum FriendRequestStatus {
 public class FriendRequests {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @ManyToMany
     private List<Users> sender;
@@ -36,7 +36,7 @@ public class FriendRequests {
     private FriendRequestStatus status;
 
     // Getters and Setters
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -52,7 +52,7 @@ public class FriendRequests {
         return status;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

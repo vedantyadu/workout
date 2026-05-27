@@ -12,10 +12,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vedantyadu.workout.config.AuthConfig;
 import com.vedantyadu.workout.config.GoogleAuthConfig;
-import com.vedantyadu.workout.db.refreshTokens.RefreshTokens;
-import com.vedantyadu.workout.db.refreshTokens.RefreshTokensRepository;
-import com.vedantyadu.workout.db.users.Users;
-import com.vedantyadu.workout.db.users.UsersRepository;
+import com.vedantyadu.workout.db.RefreshTokens;
+import com.vedantyadu.workout.repository.RefreshTokensRepository;
+import com.vedantyadu.workout.db.Users;
+import com.vedantyadu.workout.repository.UsersRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

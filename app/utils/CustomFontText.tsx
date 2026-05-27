@@ -1,39 +1,41 @@
 import { Text } from 'react-native'
 import { twMerge } from 'tailwind-merge'
 
-export function GeistText({
+export function MontserratText({
   weight,
   children,
   style,
+  className,
   ...props
 }: React.ComponentProps<typeof Text> & {
-  weight?: 'regular' | 'italic' | 'medium' | 'semi-bold' | 'bold'
+  weight?: 'light' | 'regular' | 'medium' | 'semi-bold' | 'bold'
 }) {
   let fontString: string
 
   switch (weight) {
-    case 'regular':
-      fontString = 'Geist-Regular'
+    case 'light':
+      fontString = 'Montserrat-Light'
       break
-    case 'italic':
-      fontString = 'Geist-RegularItalic'
+    case 'regular':
+      fontString = 'Montserrat-Regular'
       break
     case 'medium':
-      fontString = 'Geist-Medium'
+      fontString = 'Montserrat-Medium'
       break
     case 'semi-bold':
-      fontString = 'Geist-SemiBold'
+      fontString = 'Montserrat-SemiBold'
       break
     case 'bold':
-      fontString = 'Geist-Bold'
+      fontString = 'Montserrat-Bold'
       break
     default:
-      fontString = 'Geist-Regular'
+      fontString = 'Montserrat-Regular'
       break
   }
 
   return (
     <Text
+      className={twMerge('text-neutral-800', className)}
       style={[style, { fontFamily: fontString }]}
       {...props}
     >

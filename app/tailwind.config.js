@@ -6,11 +6,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        geistRegular: ['Geist-Regular'],
-        geistRegularItalic: ['Geist-RegularItalic'],
-        geistMedium: ['Geist-Medium'],
-        geistSemiBold: ['Geist-SemiBold'],
-        geistBold: ['Geist-Bold'],
+        montserratLight: ['Montserrat-Light'],
+        montserratRegular: ['Montserrat-Regular'],
+        montserratMedium: ['Montserrat-Medium'],
+        montserratSemiBold: ['Montserrat-SemiBold'],
+        montserratBold: ['Montserrat-Bold'],
         spaceGroteskLight: ['SpaceGrotesk-Light'],
         spaceGroteskRegular: ['SpaceGrotesk-Regular'],
         spaceGroteskMedium: ['SpaceGrotesk-Medium'],

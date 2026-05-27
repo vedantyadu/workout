@@ -9,11 +9,12 @@ import { useFonts } from 'expo-font'
 import { DeepLinkProvider } from '@/context/DeepLinkContext'
 import { UserProvider } from '@/context/UserContext'
 
-const GesitRegular = require('../assets/fonts/Geist-Regular.ttf')
-const GeistRegularItalic = require('../assets/fonts/Geist-RegularItalic.ttf')
-const GeistMedium = require('../assets/fonts/Geist-Medium.ttf')
-const GeistSemiBold = require('../assets/fonts/Geist-SemiBold.ttf')
-const GeistBold = require('../assets/fonts/Geist-Bold.ttf')
+const MontserratRegular = require('../assets/fonts/Montserrat-Regular.ttf')
+const MontserratLight = require('../assets/fonts/Montserrat-Light.ttf')
+const MontserratMedium = require('../assets/fonts/Montserrat-Medium.ttf')
+const MontserratSemiBold = require('../assets/fonts/Montserrat-SemiBold.ttf')
+const MontserratBold = require('../assets/fonts/Montserrat-Bold.ttf')
+
 const SpaceGroteskLight = require('../assets/fonts/SpaceGrotesk-Light.ttf')
 const SpaceGroteskRegular = require('../assets/fonts/SpaceGrotesk-Regular.ttf')
 const SpaceGroteskMedium = require('../assets/fonts/SpaceGrotesk-Medium.ttf')
@@ -29,11 +30,11 @@ const OutfitExtraBold = require('../assets/fonts/Outfit-ExtraBold.ttf')
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    'Geist-Regular': GesitRegular,
-    'Geist-RegularItalic': GeistRegularItalic,
-    'Geist-Medium': GeistMedium,
-    'Geist-SemiBold': GeistSemiBold,
-    'Geist-Bold': GeistBold,
+    'Montserrat-Regular': MontserratRegular,
+    'Montserrat-Light': MontserratLight,
+    'Montserrat-Medium': MontserratMedium,
+    'Montserrat-SemiBold': MontserratSemiBold,
+    'Montserrat-Bold': MontserratBold,
     'SpaceGrotesk-Light': SpaceGroteskLight,
     'SpaceGrotesk-Regular': SpaceGroteskRegular,
     'SpaceGrotesk-Medium': SpaceGroteskMedium,

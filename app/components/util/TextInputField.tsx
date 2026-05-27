@@ -7,7 +7,10 @@ export default function TextInputField({
 }: TextInputProps) {
   return (
     <TextInput
-      className={twMerge('border border-neutral-200 rounded-lg px-4 py-3 font-outfitRegular text-neutral-600 placeholder:text-neutral-400 text-sm', className)}
+      className={twMerge(
+        'bg-neutral-50 rounded-xl px-4 py-3 font-outfitRegular text-neutral-600 placeholder:text-neutral-300 text-sm',
+        className,
+      )}
       {...props}
     />
   )

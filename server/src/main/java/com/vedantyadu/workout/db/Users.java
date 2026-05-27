@@ -1,4 +1,4 @@
-package com.vedantyadu.workout.db.users;
+package com.vedantyadu.workout.db;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -6,8 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
-
-import com.vedantyadu.workout.db.refreshTokens.RefreshTokens;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +19,7 @@ public class Users {
     @Column(unique = true)
     private String username;
 
+    @Column
     private String fullName;
 
     @Column(unique = true)
@@ -29,11 +28,26 @@ public class Users {
     @Column
     private boolean setupComplete = false;
 
+    @Column
+    private Float weight;
+
+    @Column
+    private Float height;
+
+    @Column
+    private Integer age;
+
+    @Column
+    private String gender;
+
     @OneToMany(mappedBy = "user")
     private List<RefreshTokens> refreshTokens;
 
+    @OneToMany(mappedBy = "author")
+    private List<Posts> posts;
+
     @Column
-    private String profilePictureUrl;
+    private String profilePictureURL;
 
     public Users() {
     }
@@ -82,11 +96,43 @@ public class Users {
         this.setupComplete = setupComplete;
     }
 
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
+    public String getProfilePictureURL() {
+        return profilePictureURL;
     }
 
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
+    public void setProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
+    }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
+
+    public Float getHeight() {
+        return height;
+    }
+
+    public void setHeight(Float height) {
+        this.height = height;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

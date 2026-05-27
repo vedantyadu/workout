@@ -1,6 +1,4 @@
-package com.vedantyadu.workout.db.friends;
-
-import com.vedantyadu.workout.db.users.Users;
+package com.vedantyadu.workout.db;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
