@@ -16,6 +16,7 @@ public class ImagePipeline {
   private int totalPixels;
   private int quality;
   private AspectRatio aspectRatio;
+  private String format = "jpeg";
 
   public ImagePipeline(int totalPixels, int quality, AspectRatio aspectRatio) {
     this.totalPixels = totalPixels;
@@ -65,7 +66,7 @@ public class ImagePipeline {
   }
 
   private byte[] compressImage(BufferedImage bufferedImage) throws Exception {
-    ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
+    ImageWriter writer = ImageIO.getImageWritersByFormatName(format).next();
     ImageWriteParam param = writer.getDefaultWriteParam();
     param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
     param.setCompressionQuality(quality / 100.0f);
@@ -80,5 +81,13 @@ public class ImagePipeline {
     image = cropImage(image);
     image = resizeImage(image);
     return compressImage(image);
+  }
+
+  public void setFormat(String format) {
+    this.format = format;
+  }
+
+  public String getFormat() {
+    return format;
   }
 }
