@@ -16,7 +16,7 @@ import SelectDuration from '@/components/screens/post/activity/SelectDuration'
 import * as ImagePicker from 'expo-image-picker'
 import SelectLocation from '@/components/screens/post/SelectLocation'
 import { AlertModal } from '@/components/util/AlertModal'
-import Option from '@/components/util/Option'
+import Option from '@/components/util/OptionTouchable'
 import {
   PrimaryTouchable,
   SecondaryTouchable,

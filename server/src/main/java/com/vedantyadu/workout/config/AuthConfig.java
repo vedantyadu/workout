@@ -2,6 +2,7 @@ package com.vedantyadu.workout.config;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -24,18 +25,18 @@ public class AuthConfig {
     @Value("${jwt.refreshExpirationMs}")
     private Integer jwtRefreshExpirationMs;
 
-    public String generateAccessToken(String userId) {
+    public String generateAccessToken(UUID userId) {
         return Jwts.builder()
-                .subject(userId)
+                .subject(userId.toString())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + this.jwtAccessExpirationMs))
                 .signWith(this.getSigningKey(this.jwtAccessSecretKey))
                 .compact();
     }
 
-    public String generateRefreshToken(String userId) {
+    public String generateRefreshToken(UUID userId) {
         return Jwts.builder()
-                .subject(userId)
+                .subject(userId.toString())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + this.jwtRefreshExpirationMs))
                 .signWith(this.getSigningKey(this.jwtRefreshSecretKey))

@@ -1,6 +1,7 @@
 package com.vedantyadu.workout.controller.auth;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,7 +69,7 @@ public class AuthController {
         try {
             String refreshToken = body.get("refreshToken");
             Jws<Claims> claims = authConfig.validateAndGetRefreshClaims(refreshToken);
-            String userId = claims.getPayload().getSubject();
+            UUID userId = UUID.fromString(claims.getPayload().getSubject());
 
             RefreshTokens storedToken = refreshTokensRepository.findByToken(refreshToken);
 

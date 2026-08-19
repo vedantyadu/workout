@@ -1,5 +1,7 @@
 package com.vedantyadu.workout.middleware;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -26,7 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             try {
                 String token = accessToken.substring(7);
                 Jws<Claims> claims = authConfig.validateAndGetClaims(token);
-                request.setAttribute("userId", claims.getPayload().getSubject());
+                request.setAttribute("userId", UUID.fromString(claims.getPayload().getSubject()));
                 return true;
             } catch (Exception e) {
             }

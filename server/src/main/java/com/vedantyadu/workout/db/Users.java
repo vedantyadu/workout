@@ -6,15 +6,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
+import java.util.UUID;
+
+import com.vedantyadu.workout.utils.Enums;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @Column(unique = true)
     private String username;
@@ -38,7 +43,8 @@ public class Users {
     private Integer age;
 
     @Column
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Enums.Gender gender;
 
     @OneToMany(mappedBy = "user")
     private List<RefreshTokens> refreshTokens;
@@ -56,11 +62,11 @@ public class Users {
         this.googleId = googleId;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -128,11 +134,11 @@ public class Users {
         this.age = age;
     }
 
-    public String getGender() {
+    public Enums.Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Enums.Gender gender) {
         this.gender = gender;
     }
 }

@@ -7,6 +7,7 @@ export type UserContextType = {
   setUserDataFetched: React.Dispatch<React.SetStateAction<boolean>>
   userData: UserDataType | null
   setUserData: React.Dispatch<React.SetStateAction<UserDataType | null>>
+  getUserData: () => void
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -29,7 +30,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <UserContext.Provider
-      value={{ userData, setUserData, userDataFetched, setUserDataFetched }}
+      value={{
+        userData,
+        setUserData,
+        userDataFetched,
+        setUserDataFetched,
+        getUserData,
+      }}
     >
       {children}
     </UserContext.Provider>

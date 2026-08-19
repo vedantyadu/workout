@@ -1,5 +1,7 @@
 package com.vedantyadu.workout.db;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +13,7 @@ public class RefreshTokens {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @ManyToOne
     private Users user;
@@ -24,6 +26,14 @@ public class RefreshTokens {
     public RefreshTokens(Users user, String token) {
         this.user = user;
         this.token = token;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getToken() {

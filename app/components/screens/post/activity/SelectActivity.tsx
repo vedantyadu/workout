@@ -1,13 +1,5 @@
-import { usePostContext } from '@/context/PostContext'
 import { OutfitText } from '@/utils/CustomFontText'
-import {
-  Check,
-  Circle,
-  CircleCheck,
-  CircleX,
-  RefreshCcw,
-  Undo2,
-} from 'lucide-react-native'
+import { Circle, CircleCheck } from 'lucide-react-native'
 import { ScrollView, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 

@@ -2,7 +2,7 @@ import { OutfitText } from '@/utils/CustomFontText'
 import { ChevronRight } from 'lucide-react-native'
 import { GestureResponderEvent, TouchableOpacity, View } from 'react-native'
 
-export default function Option({
+export default function OptionTouchable({
   icon,
   heading,
   value,
@@ -15,6 +15,7 @@ export default function Option({
   value?: string | null
   placeholder?: string
   onPress?: (event: GestureResponderEvent) => void
+  private?: boolean
   dotVisible?: boolean
 }) {
   return (

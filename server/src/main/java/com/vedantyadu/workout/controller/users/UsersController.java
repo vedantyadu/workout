@@ -1,6 +1,8 @@
 package com.vedantyadu.workout.controller.users;
 
 import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,11 +24,9 @@ import com.vedantyadu.workout.dto.UsersDTO.UserResponse;
 import com.vedantyadu.workout.dto.UsersDTO.UserSetupRequest;
 import com.vedantyadu.workout.repository.UsersRepository;
 import com.vedantyadu.workout.service.GoogleCloudStorageService;
-import com.vedantyadu.workout.utils.enums.StorageFolder;
+import com.vedantyadu.workout.utils.Enums.StorageFolder;
 import com.vedantyadu.workout.utils.image.AspectRatio;
 import com.vedantyadu.workout.utils.image.ImagePipeline;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/users")
@@ -47,7 +47,7 @@ public class UsersController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MeResponse> getCurrentUserDetails(@RequestAttribute("userId") String userId) {
+    public ResponseEntity<MeResponse> getCurrentUserDetails(@RequestAttribute("userId") UUID userId) {
         Optional<Users> user = usersRepository.findById(userId);
 
         if (user.isEmpty()) {
@@ -75,7 +75,7 @@ public class UsersController {
     @PostMapping("/{username}/friend-request")
     public ResponseEntity<String> sendFriendRequest(
             @PathVariable String username,
-            @RequestAttribute("userId") String userId) {
+            @RequestAttribute("userId") UUID userId) {
 
         Users sender = usersRepository.getReferenceById(userId);
         Optional<Users> receiver = usersRepository.findByUsername(username);
@@ -96,11 +96,9 @@ public class UsersController {
 
     @PostMapping(value = "/setup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> completeSetup(
-            HttpServletRequest request,
+            @RequestAttribute("userId") UUID userId,
             @RequestPart(value = "profilePicture", required = false) MultipartFile profilePicture,
             @RequestPart("setupData") String setupRequest) {
-
-        String userId = (String) request.getAttribute("userId");
 
         Users user = usersRepository.findById(userId).orElse(null);
 
@@ -116,6 +114,7 @@ public class UsersController {
                         processedImage, StorageFolder.PROFILE_PICTURE);
                 user.setProfilePictureURL(imageUrl);
             } catch (Exception e) {
+                e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the image");
             }
         }
@@ -123,7 +122,10 @@ public class UsersController {
         try {
             UserSetupRequest userSetupData = new ObjectMapper().readValue(setupRequest,
                     UserSetupRequest.class);
+            user.setUsername(userSetupData.getUsername());
             user.setFullName(userSetupData.getFullName());
+            user.setHeight(userSetupData.getHeight());
+            user.setWeight(userSetupData.getWeight());
             user.setSetupComplete(true);
             usersRepository.save(user);
         } catch (Exception e) {

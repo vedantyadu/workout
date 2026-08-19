@@ -1,11 +1,13 @@
 package com.vedantyadu.workout.dto;
 
+import java.util.UUID;
+
 import com.vedantyadu.workout.db.Users;
 
 public class UsersDTO {
   public static class MeResponse {
 
-    private String id;
+    private UUID id;
     private String name;
     private String googleId;
     private boolean setupComplete;
@@ -19,7 +21,7 @@ public class UsersDTO {
       this.profilePictureUrl = user.getProfilePictureURL();
     }
 
-    public String getId() {
+    public UUID getId() {
       return id;
     }
 
@@ -41,7 +43,7 @@ public class UsersDTO {
   }
 
   public static class UserResponse {
-    private String id;
+    private UUID id;
     private String name;
     private String profilePictureUrl;
 
@@ -51,7 +53,7 @@ public class UsersDTO {
       this.profilePictureUrl = user.getProfilePictureURL();
     }
 
-    public String getId() {
+    public UUID getId() {
       return id;
     }
 
@@ -65,21 +67,23 @@ public class UsersDTO {
   }
 
   public static class UserSetupRequest {
+    public String username;
     public String fullName;
     public Float weight;
     public Float height;
-    public Integer age;
-    public String gender;
 
     public UserSetupRequest() {
     }
 
-    public UserSetupRequest(String fullName, Float weight, Float height, Integer age, String gender) {
+    public UserSetupRequest(String username, String fullName, Float weight, Float height) {
+      this.username = username;
       this.fullName = fullName;
       this.weight = weight;
       this.height = height;
-      this.age = age;
-      this.gender = gender;
+    }
+
+    public String getUsername() {
+      return username;
     }
 
     public String getFullName() {
@@ -94,12 +98,5 @@ public class UsersDTO {
       return height;
     }
 
-    public Integer getAge() {
-      return age;
-    }
-
-    public String getGender() {
-      return gender;
-    }
   }
 }

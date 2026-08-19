@@ -8,6 +8,7 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,8 +55,11 @@ public class ImagePipeline {
       return bufferedImage;
     }
 
-    int newHeight = (int) (totalPixels * aspectRatio.getVertical() / aspectRatio.getHorizontal());
-    int newWidth = (int) (totalPixels / newHeight);
+    int newWidth = (int) Math.sqrt(totalPixels * aspectRatio.getHorizontal() / aspectRatio.getVertical());
+    int newHeight = (int) (totalPixels / newWidth);
+
+    System.out.println("Old: " + height + " x " + width);
+    System.out.println("New: " + newHeight + " x " + newWidth);
 
     BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2d = resizedImage.createGraphics();
@@ -71,8 +75,12 @@ public class ImagePipeline {
     param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
     param.setCompressionQuality(quality / 100.0f);
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    writer.setOutput(outputStream);
+    ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(outputStream);
+    writer.setOutput(imageOutputStream);
     writer.write(null, new IIOImage(bufferedImage, null, null), param);
+    imageOutputStream.flush();
+    imageOutputStream.close();
+    writer.dispose();
     return outputStream.toByteArray();
   }
 

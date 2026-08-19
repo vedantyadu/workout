@@ -1,6 +1,7 @@
 package com.vedantyadu.workout.controller.friends;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +13,15 @@ import com.vedantyadu.workout.db.Friends;
 import com.vedantyadu.workout.repository.FriendsRepository;
 
 class FriendsDTO {
-    private String id;
+    private UUID id;
     private String name;
 
-    public FriendsDTO(String id, String name) {
+    public FriendsDTO(UUID id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -40,10 +41,10 @@ public class FriendsController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<FriendsDTO>> getFriendsList(@RequestAttribute("userId") String userId) {
+    public ResponseEntity<List<FriendsDTO>> getFriendsList(@RequestAttribute("userId") UUID userId) {
         List<Friends> friends = friendsRepository.findByUserId(userId);
         List<FriendsDTO> friendsDTOs = friends.stream()
-                .map(friend -> new FriendsDTO(friend.getFriend().getId(), friend.getFriend().getFullName()))
+                .map(friend -> new FriendsDTO(friend.getFriend().getId(), friend.getFriend().getUsername()))
                 .toList();
         return ResponseEntity.ok(friendsDTOs);
     }

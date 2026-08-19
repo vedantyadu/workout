@@ -4,20 +4,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
-import com.vedantyadu.workout.utils.enums.StorageFolder;
+import com.vedantyadu.workout.utils.Enums.StorageFolder;;
 
 @Configuration
 public class GoogleCloudStorageConfig {
 
-  @Value("${gcp.project.id}")
+  @Value("${google.cloud.project.id}")
   private String projectId;
-  @Value("${gcp.storage.bucket.name}")
+  @Value("${google.cloud.storage.bucket.name}")
   private String bucketName;
-  @Value("${gcp.storage.folder.profile.pictures}")
+  @Value("${google.cloud.storage.folder.profile-pictures}")
   private String profilePictureFolder;
-  @Value("${gcp.storage.folder.posts}")
+  @Value("${google.cloud.storage.folder.posts}")
   private String postsFolder;
-  @Value("${gcp.credentials.storage-admin.credential-file-path}")
+  @Value("${google.cloud.credentials.storage-admin.credential-file-path}")
   private Resource storageAdminCredentialFilePath;
 
   public GoogleCloudStorageConfig() {

@@ -6,18 +6,13 @@ import jakarta.persistence.ManyToMany;
 import java.util.List;
 import java.util.UUID;
 
+import com.vedantyadu.workout.utils.Enums.FriendRequestStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-
-enum FriendRequestStatus {
-    PENDING,
-    ACCEPTED,
-    REJECTED
-}
 
 @Entity
 public class FriendRequests {

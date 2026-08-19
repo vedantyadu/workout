@@ -7,7 +7,7 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.vedantyadu.workout.config.GoogleCloudStorageConfig;
-import com.vedantyadu.workout.utils.enums.StorageFolder;
+import com.vedantyadu.workout.utils.Enums.StorageFolder;
 
 import org.springframework.stereotype.Service;
 
@@ -23,6 +23,7 @@ public class GoogleCloudStorageService {
 
   public GoogleCloudStorageService(
       GoogleCloudStorageConfig config) throws IOException {
+    System.out.println(config.getStorageAdminCredentialFilePath());
     this.config = config;
     GoogleCredentials credentials = GoogleCredentials
         .fromStream(config.getStorageAdminCredentialFilePath().getInputStream());
@@ -32,9 +33,10 @@ public class GoogleCloudStorageService {
 
   public String uploadFile(String contentType, byte[] content, StorageFolder folder) {
     UUID uuid = UUID.randomUUID();
+
     String uuidString = uuid.toString();
 
-    String folderName = config.getFolderName(bucket);
+    String folderName = config.getFolderName(folder);
 
     BlobId blobId = BlobId.of(config.getBucketName(), folderName + "/" + uuidString);
     BlobInfo blobInfo = BlobInfo
@@ -45,6 +47,6 @@ public class GoogleCloudStorageService {
         .build();
     this.storage.create(blobInfo, content);
 
-    return uuidString;
+    return blobInfo.getMediaLink();
   }
 }

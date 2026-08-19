@@ -3,6 +3,7 @@ import { View, Pressable } from 'react-native'
 import { OutfitText } from '@/utils/CustomFontText'
 import * as WebBrowser from 'expo-web-browser'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { ArrowRight, ChevronRight } from 'lucide-react-native'
 
 const googleIcon = require('../assets/images/google-icon.svg')
 const appLogo = require('../assets/images/workout-logo.svg')
@@ -31,39 +32,44 @@ export default function SignInScreen() {
   }
 
   return (
-    <SafeAreaView className='flex-1 p-4 bg-neutral-100'>
-      <View className='flex-1 items-center gap-16 pt-16'>
+    <SafeAreaView className='flex-1 p-4 bg-white'>
+      <View className='flex-1 items-center gap-6 justify-center'>
         <View className='items-center'>
           <Image
             source={appLogo}
             style={{ height: 64, aspectRatio: 1 }}
           />
-          <OutfitText
-            weight='medium'
-            className='text-neutral-400 text-xs'
-          >
-            Workout, Out Loud.
-          </OutfitText>
         </View>
-        <View className='items-center w-full gap-4'>
+        <View className='items-center w-full gap-8'>
           <OutfitText
             weight='bold'
-            className='text-xl text-neutral-600'
+            className='text-2xl text-center'
           >
-            Sign in or Create an Account to Continue.
+            Create an account or sign in to continue
           </OutfitText>
-          <Pressable className='flex-row items-center justify-center px-6 py-4 border border-neutral-400 rounded-lg gap-4 w-full'>
-            <Image
-              source={googleIcon}
-              style={{ width: 16, height: 16 }}
-            />
-            <OutfitText
-              weight='semi-bold'
-              className='text-sm text-neutral-500'
-              onPress={handleGoogleSignInPress}
-            >
-              Continue with Google
-            </OutfitText>
+          <Pressable
+            className='flex-row items-center justify-between px-4 py-4 bg-neutral-50 rounded-lg gap-4 w-full'
+            onPress={handleGoogleSignInPress}
+          >
+            <View className='flex-row items-center gap-4'>
+              <Image
+                source={googleIcon}
+                style={{ width: 16, height: 16 }}
+              />
+              <OutfitText
+                weight='medium'
+                className='text-sm text-neutral-400'
+                onPress={handleGoogleSignInPress}
+              >
+                Continue with Google
+              </OutfitText>
+            </View>
+            <View className='items-center justify-center size-4'>
+              <ArrowRight
+                size={16}
+                color='#a3a3a3'
+              />
+            </View>
           </Pressable>
         </View>
       </View>

@@ -1,6 +1,7 @@
 package com.vedantyadu.workout.db;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,11 +14,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Posts {
+public abstract class Posts {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  private Long id;
+  private UUID id;
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)

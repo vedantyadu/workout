@@ -122,12 +122,11 @@ export function OutfitText({
 
   return (
     <Text
-      className={twMerge('text-neutral-800', className)}
+      className={twMerge('text-neutral-600', className)}
       style={[style, { fontFamily: fontString }]}
       {...props}
     >
       {children}
     </Text>
   )
-
 }
