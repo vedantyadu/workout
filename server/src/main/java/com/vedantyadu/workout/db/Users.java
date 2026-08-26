@@ -52,6 +52,9 @@ public class Users {
     @OneToMany(mappedBy = "author")
     private List<Posts> posts;
 
+    @OneToMany(mappedBy = "user")
+    private List<Subscriptions> subscriptions;
+
     @Column
     private String profilePictureURL;
 
